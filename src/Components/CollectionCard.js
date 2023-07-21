@@ -18,6 +18,7 @@ function CollectionCard({completedStatus, userProjectID, project, setCompletedSt
     const [show, setShow] = useState(false)
     const handleClose = () => setShow(false)
     
+    
 
     function handleChange(e) {
         const newStatus = e.target.value
@@ -56,14 +57,13 @@ function CollectionCard({completedStatus, userProjectID, project, setCompletedSt
         .catch(() => setErrors(["Unable to remove project from your collection at this time"]))
     }
 
-    // function handleClick() {
-    //     setShow(true);
-    // }
+    function handleClickDelete() {
+        setShow(true);
+    }
 
 
     return (
         <Col>
-            {/* <DeleteConfirmation showModal={show} handleClose={handleClose} handleDelete={handleDelete} userProjectID={userProjectID} /> */}
             {errors ? <ErrorMessages errors={errors} />
             :
             <Card>
@@ -80,9 +80,8 @@ function CollectionCard({completedStatus, userProjectID, project, setCompletedSt
                             <option value="completed">Completed</option>
                         </Form.Select>
                         </div>
-                    <Button onClick={handleDelete} className="btn-link text-danger mt-auto">Remove from collection</Button>
-                    
-                
+                    <Button onClick={handleClickDelete} className="btn-link text-danger mt-auto">Remove from collection</Button>
+                    <DeleteConfirmation showModal={show} handleClose={handleClose} handleDelete={handleDelete} />
             </Card>
             }
         </Col>

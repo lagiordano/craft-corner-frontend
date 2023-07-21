@@ -50,3 +50,11 @@ footer {
 }
 
 
+button.btn-link:hover{
+  background-color: white;
+}
+
+button.btn-link:active{
+  background-color: white;
+}
+

@@ -60,9 +60,9 @@ function Dashboard() {
             <Col sm={12} md={8} className="d-flex justify-content-evenly">
                 <Button variant="outline-secondary" size="sm" className="px-3" onClick={handleCollectionClick} value="all">All</Button>
                 <Button variant="outline-secondary" size="sm" onClick={handleCollectionClick} value="in progress">In Progress</Button>
-                <Button variant="outline-secondary" size="sm" onClick={handleCollectionClick} value="completed">Completed</Button>
                 <Button variant="outline-secondary" size="sm" onClick={handleCollectionClick} value="wish list">Wish List</Button>
-                <Button variant="outline-secondary" size="sm" onClick={handleSharedByMeClick} >Shared By Me</Button>
+                <Button variant="outline-secondary" size="sm" onClick={handleCollectionClick} value="completed">Completed</Button>
+                <Button variant="outline-secondary" size="sm" onClick={handleSharedByMeClick} >Shared By You</Button>
             </Col>
         </Row>
         <Container>
@@ -75,7 +75,7 @@ function Dashboard() {
             :
             <>
                 {(projectsToDisplay.length === 0) ? 
-                <div className="text-secondary fs-5">Looks like there are no project matching your search. Try changing categories or trying a different search term.</div>
+                <h5 className="text-secondary">No projects in your collection match your selection, try changing categories or head to our projects page to find some inspiration.</h5>
                 :
                 <Row xs={1} sm={2} md={3} xl={4} className="g-4 mx-2 justify-content-center d-flex">
                     {projectsToDisplay.map( item => <CollectionCard project={item.project} completedStatus={item.completed_status} userProjectID={item.id} key={item.id} setCompletedStatus={setCompletedStatus} setProjectRemoved={setProjectRemoved}/>)}
