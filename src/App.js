@@ -35,7 +35,7 @@ function App() {
         <Route exact path="/projects" element={<Projects />} />
         <Route path="/projects/:id" element={<Project currentUser={currentUser} />} />
         <Route exact path="/dashboard" element={<Dashboard />} />
-        <Route exact path="/addproject" element={<AddProject />} />
+        <Route exact path="/projects/addproject" element={<AddProject />} />
       </Routes>
       <Footer /> 
     </>

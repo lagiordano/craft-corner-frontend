@@ -6,6 +6,7 @@ import projectPlaceholder from "../images/projectPlaceholder.jpg";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import ErrorMessages from "./ErrorMessages";
+import DeleteConfirmation from "./DeleteConfirmation";
 
 
 function CollectionCard({completedStatus, userProjectID, project, setCompletedStatus, setProjectRemoved}) {
@@ -13,6 +14,10 @@ function CollectionCard({completedStatus, userProjectID, project, setCompletedSt
    
     const [errors, setErrors] = useState(null)
     const [completedValue, setCompletedValue] = useState(completedStatus)
+    
+    const [show, setShow] = useState(false)
+    const handleClose = () => setShow(false)
+    
 
     function handleChange(e) {
         const newStatus = e.target.value
@@ -36,9 +41,7 @@ function CollectionCard({completedStatus, userProjectID, project, setCompletedSt
         .catch(() => setErrors(["Unable to update collection at this time"]))
     }
 
-    
-
-    function handleRemoveClick() {
+    function handleDelete() {
         fetch(`http://localhost:3000/user_projects/${userProjectID}`, {
             method: "DELETE"
         })
@@ -53,9 +56,14 @@ function CollectionCard({completedStatus, userProjectID, project, setCompletedSt
         .catch(() => setErrors(["Unable to remove project from your collection at this time"]))
     }
 
+    // function handleClick() {
+    //     setShow(true);
+    // }
+
 
     return (
         <Col>
+            {/* <DeleteConfirmation showModal={show} handleClose={handleClose} handleDelete={handleDelete} userProjectID={userProjectID} /> */}
             {errors ? <ErrorMessages errors={errors} />
             :
             <Card>
@@ -72,7 +80,7 @@ function CollectionCard({completedStatus, userProjectID, project, setCompletedSt
                             <option value="completed">Completed</option>
                         </Form.Select>
                         </div>
-                    <Button onClick={handleRemoveClick} className="btn-link text-danger mt-auto">Remove from collection</Button>
+                    <Button onClick={handleDelete} className="btn-link text-danger mt-auto">Remove from collection</Button>
                     
                 
             </Card>

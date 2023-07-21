@@ -13,7 +13,7 @@ function NavBar() {
           <Nav className="me-auto">
             <Nav.Link href="/projects" className="text-primary fs-5">Projects</Nav.Link>
             <Nav.Link href="/dashboard" className="text-primary fs-5">Your Collection</Nav.Link>
-            <Nav.Link href="/addproject" className="text-primary fs-5">Add New Project</Nav.Link>
+            <Nav.Link href="/projects/addproject" className="text-primary fs-5">Add New Project</Nav.Link>
           </Nav>
           <Nav>
             <Nav.Link href="#"><Button variant="outline-primary">Account</Button></Nav.Link>

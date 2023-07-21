@@ -73,9 +73,15 @@ function Dashboard() {
         <Container className="mb-5 mt-2">
             {errors ? <ErrorMessages errors={errors} />
             :
-            <Row xs={1} sm={2} md={3} xl={4} className="g-4 mx-2 justify-content-center d-flex">
-                {projectsToDisplay.map( item => <CollectionCard project={item.project} completedStatus={item.completed_status} userProjectID={item.id} key={item.id} setCompletedStatus={setCompletedStatus} setProjectRemoved={setProjectRemoved}/>)}
-            </Row>
+            <>
+                {(projectsToDisplay.length === 0) ? 
+                <div className="text-secondary fs-5">Looks like there are no project matching your search. Try changing categories or trying a different search term.</div>
+                :
+                <Row xs={1} sm={2} md={3} xl={4} className="g-4 mx-2 justify-content-center d-flex">
+                    {projectsToDisplay.map( item => <CollectionCard project={item.project} completedStatus={item.completed_status} userProjectID={item.id} key={item.id} setCompletedStatus={setCompletedStatus} setProjectRemoved={setProjectRemoved}/>)}
+                </Row>
+                }
+            </>
             }
         </Container>
         </>

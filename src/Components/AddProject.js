@@ -16,7 +16,7 @@ function AddProject() {
     
 
     const navigate = useNavigate();
-    const [errors, setErrors] = useState(null)
+    const [errors, setErrors] = useState(null);
 
     const [newProject, setNewProject] = useState({
         url: "",
@@ -24,6 +24,13 @@ function AddProject() {
         completedStatus: ""
     })
 
+
+    function handleCategorySelect(e) {
+        setNewProject({
+            ...newProject, 
+            category: e.target.value
+        })
+    }
 
     function handleFormChange(e){
         const name = e.target.name;
@@ -35,6 +42,7 @@ function AddProject() {
     };
 
     function handleSubmit(e){
+    
         e.preventDefault();
         const data = {
             url: newProject.url,
@@ -62,7 +70,7 @@ function AddProject() {
                 setErrors(null)
                 navigate(`/projects/${json.id}`)
             };
-        });
+        });  
     }
 
 
@@ -75,7 +83,6 @@ function AddProject() {
                 :
                 null   
                 }
-
                 <Row className="d-flex justify-content-center">
                     <Col xs={12} md={10} lg={8} className="bg-white p-2 p-md-3 p-lg-4 m-3 m-md-5 rounded text-secondary ">
                         <h3 className="p-2">Add a New Project</h3>
@@ -83,11 +90,14 @@ function AddProject() {
                         <Form onSubmit={handleSubmit}>
                             <Form.Group controlId="formGroupCategory" className="p-2">
                                 <Form.Label className="pe-3">Project Category:</Form.Label>
-                                <Form.Check inline required name="category" label="Fabric" type="radio" value="fabric" onChange={handleFormChange}/>
-                                <Form.Check inline required name="category" label="Yarn" type="radio" value="yarn" onChange={handleFormChange} />
-                                <Form.Check inline required name="category" label="Home" type="radio" value="home" onChange={handleFormChange}/>
-                                <Form.Check inline required name="category" label="Art" type="radio" value="art" onChange={handleFormChange}/>
-                                <Form.Check inline required name="category" label="Kids" type="radio" value="kids" onChange={handleFormChange}/>
+                                <Form.Select required onChange={handleCategorySelect}>
+                                    <option value="">Select Category</option>
+                                    <option name="category" value="yarn">Yarn</option>
+                                    <option name="category" value="fabric">Fabric</option>
+                                    <option name="category" value="home">Home</option>
+                                    <option name="category" value="art">Art</option>
+                                    <option name="category" value="kids">Kids</option>
+                                </Form.Select>
                             </Form.Group>
                             <Form.Group controlId="formGroupUrl" className="p-2">
                                     <Form.Label className="d-inline pe-3">Project Link:</Form.Label>
@@ -99,6 +109,7 @@ function AddProject() {
                                 <Form.Check inline required name="completedStatus" label="Wish List" type="radio" value="wish list" onChange={handleFormChange} />
                                 <Form.Check inline required name="completedStatus" label="Completed" type="radio" value="completed" onChange={handleFormChange}/>
                             </Form.Group>
+                        
                             <Button variant="primary" type="submit" className="p-2 text-white">Submit</Button>
                         </Form>
                     </Col>

@@ -38,6 +38,8 @@ function Projects() {
     });
 
     const projectsToDisplay = filteredProjects.filter( project => project.title.toLowerCase().includes(search.toLowerCase()));
+    console.log(projectsToDisplay)
+
 
     return (
         <>
@@ -54,10 +56,17 @@ function Projects() {
         <Container className="mb-5 mt-2">
             {errors ? <ErrorMessages errors={errors} />
             :
-            <Row xs={1} sm={2} md={3} xl={4} className="g-4 mx-2 justify-content-center d-flex">
-                {projectsToDisplay.map( project => <ProjectCard image={project.image} title={project.title} id={project.id} key={project.id} />)}
-            </Row>
+            <>
+                {(projectsToDisplay.length === 0) ? 
+                <div className="text-secondary fs-5">Looks like there are no project matching your search. Try changing categories or trying a different search term.</div>
+                :
+                <Row xs={1} sm={2} md={3} xl={4} className="g-4 mx-2 justify-content-center d-flex">
+                    {projectsToDisplay.map( project => <ProjectCard image={project.image} title={project.title} id={project.id} key={project.id} />)}
+                </Row>
+                }
+            </>
             }
+            
         </Container>
         </>
     );

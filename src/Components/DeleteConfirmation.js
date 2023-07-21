@@ -2,27 +2,22 @@ import React from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
-function DeleteConfirmation ({showModel, hideModel, userProjectID, handleDelete }) {
+function DeleteConfirmation ({showModel, handleClose, userProjectID, handleDelete }) {
 
     return (
         <Modal
-        show={show}
+        show={showModel}
         onHide={handleClose}
         backdrop="static"
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Modal title</Modal.Title>
+          <Modal.Title>Confirm Removal</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          I will not close if you click outside me. Don not even try to press
-          escape key.
-        </Modal.Body>
+        <Modal.Body>Are you sure you wish to remove this project from your collection?</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary">Understood</Button>
+          <Button variant="secondary" onClick={handleClose}>Cancel</Button>
+          <Button variant="primary">Remove</Button>
         </Modal.Footer>
       </Modal>
     )
