@@ -16,7 +16,7 @@ function Dashboard() {
 
     const [collection, setCollection] = useState([]);
     const [completedStatus, setCompletedStatus] = useState("in progress");
-    const [projectRemoved, setProjectRemoved] = useState(false)
+    const [reRender, setReRender] = useState(false)
     const [errors, setErrors] = useState(null);
     const [search, setSearch] = useState("");
     const [select, setSelect] = useState("all");
@@ -27,18 +27,24 @@ function Dashboard() {
         .then(json => {
             setCollection(json)
             setErrors(null)
-            setProjectRemoved(false)
         })
         .catch(() => setErrors(["There has been an issue loading your project information"]))
-    }, [completedStatus, projectRemoved])
+    }, [completedStatus, reRender])
 
 
     function handleCollectionClick(e) {
         setCompletedStatus(e.target.value)
+        setReRender(!reRender)
     };
 
     function handleSharedByMeClick() {
-        // work on this after user auth implemented
+        fetch("http://localhost:3000/shared_by_user")
+        .then(r => r.json())
+        .then(json => {
+            setCollection(json)
+            setErrors(null)
+        })
+        .catch(() => setErrors(["There has been as issue loading the projects you have shared"]))
     }
 
 
@@ -74,11 +80,11 @@ function Dashboard() {
             {errors ? <ErrorMessages errors={errors} />
             :
             <>
-                {(projectsToDisplay.length === 0) ? 
+                {(projectsToDisplay.length) === 0 ? 
                 <h5 className="text-secondary">No projects in your collection match your selection, try changing categories or head to our projects page to find some inspiration.</h5>
                 :
                 <Row xs={1} sm={2} md={3} xl={4} className="g-4 mx-2 justify-content-center d-flex">
-                    {projectsToDisplay.map( item => <CollectionCard project={item.project} completedStatus={item.completed_status} userProjectID={item.id} key={item.id} setCompletedStatus={setCompletedStatus} setProjectRemoved={setProjectRemoved}/>)}
+                    {projectsToDisplay.map( item => <CollectionCard project={item.project} completedStatus={item.completed_status} userProjectID={item.id} key={item.id} setCompletedStatus={setCompletedStatus} setReRender={setReRender} reRender={reRender}/>)}
                 </Row>
                 }
             </>

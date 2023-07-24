@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
@@ -9,17 +9,30 @@ import ErrorMessages from "./ErrorMessages";
 import DeleteConfirmation from "./DeleteConfirmation";
 
 
-function CollectionCard({completedStatus, userProjectID, project, setCompletedStatus, setProjectRemoved}) {
+function CollectionCard({completedStatus, userProjectID, project, setCompletedStatus, setReRender, reRender}) {
 
    
     const [errors, setErrors] = useState(null)
     const [completedValue, setCompletedValue] = useState(completedStatus)
+    const [inCollection, setInCollection] = useState(false)
     
     const [show, setShow] = useState(false)
     const handleClose = () => setShow(false)
     
-    
+    useEffect( () => {
+        fetch(`http://localhost:3000/in_collection/${project.id}`)
+        .then(r => r.json())
+        .then(json => {
+            if (json.in_collection === true) {
+                setInCollection(true)
+            } else {
+                setInCollection(false)
+            };
+        })
+        .catch(() => setErrors(["There has been an error"]))
+    }, [])
 
+    
     function handleChange(e) {
         const newStatus = e.target.value
         fetch(`http://localhost:3000/user_projects/${userProjectID}`, {
@@ -48,7 +61,7 @@ function CollectionCard({completedStatus, userProjectID, project, setCompletedSt
         })
         .then(r => {
             if (r.ok) {
-                setProjectRemoved(true)
+                setReRender(!reRender)
                 setErrors(null)
             } else {
                 setErrors(["Unable to remove project from your collection at this time"])
@@ -59,6 +72,29 @@ function CollectionCard({completedStatus, userProjectID, project, setCompletedSt
 
     function handleClickDelete() {
         setShow(true);
+    }
+
+    function handleAddClick() {
+        fetch('http://localhost:3000/user_projects', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                project_id: project.id,
+                completed_status: "wish list"
+            })
+        })
+        .then(r => r.json())
+        .then(json => {
+            if (json.errors) {
+                setErrors(json.errors)
+            } else {
+                setErrors(null)
+                setInCollection(true)
+            }
+        })
+        .catch( () => setErrors(["Could not add project to your collection"]))
     }
 
 
@@ -73,15 +109,23 @@ function CollectionCard({completedStatus, userProjectID, project, setCompletedSt
                         <Card.Text className="text-secondary text-capitalize text-strong">{project.title}</Card.Text>
                     </Card.Body>
                 </Link>
-                    <div className="justify-content-center d-flex mt-auto">
-                        <Form.Select size="sm" onChange={handleChange} className="w-50 text-secondary" defaultValue={completedValue}>
-                            <option value="wish list">Wish List</option>
-                            <option value="in progress">In Progress</option>
-                            <option value="completed">Completed</option>
-                        </Form.Select>
+                    {inCollection ?
+                    <>
+                        <div className="justify-content-center d-flex mt-auto">
+                            <Form.Select size="sm" onChange={handleChange} className="w-50 text-secondary" defaultValue={completedValue}>
+                                <option value="wish list">Wish List</option>
+                                <option value="in progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                            </Form.Select>
                         </div>
-                    <Button onClick={handleClickDelete} className="btn-link text-danger mt-auto">Remove from collection</Button>
-                    <DeleteConfirmation showModal={show} handleClose={handleClose} handleDelete={handleDelete} />
+                        <Button onClick={handleClickDelete} className="btn-link text-danger mt-auto mb-1">Remove from collection</Button>
+                        <DeleteConfirmation showModal={show} handleClose={handleClose} handleDelete={handleDelete} />
+                    </>
+                    :
+                    <div className="justify-content-center d-flex mt-auto mb-4">
+                        <Button variant="primary" className="text-white" onClick={handleAddClick}>Add to Collection</Button>
+                    </div>
+                    }
             </Card>
             }
         </Col>
