@@ -9,33 +9,36 @@ import ErrorMessages from "./ErrorMessages";
 import DeleteConfirmation from "./DeleteConfirmation";
 
 
-function CollectionCard({completedStatus, userProjectID, project, setCompletedStatus, setReRender, reRender}) {
+function CollectionCard({completedStatus, project, setCollectionFilter, setReRender, reRender}) {
 
+   
    
     const [errors, setErrors] = useState(null)
     const [completedValue, setCompletedValue] = useState(completedStatus)
-    const [inCollection, setInCollection] = useState(false)
+    const [userProjectId, setUserProjectId] = useState(null);
     
     const [show, setShow] = useState(false)
     const handleClose = () => setShow(false)
     
+    // confirms if project is currently in collection
     useEffect( () => {
-        fetch(`http://localhost:3000/in_collection/${project.id}`)
+        fetch(`http://localhost:3000/check_in_collection/${project.id}`)
         .then(r => r.json())
         .then(json => {
-            if (json.in_collection === true) {
-                setInCollection(true)
+            if (json.user_project_id !== null) {
+                setUserProjectId(json.user_project_id)
             } else {
-                setInCollection(false)
-            };
+                setUserProjectId(null)
+            }
         })
         .catch(() => setErrors(["There has been an error"]))
     }, [])
 
-    
+
+    //  updates completed status of user-project
     function handleChange(e) {
         const newStatus = e.target.value
-        fetch(`http://localhost:3000/user_projects/${userProjectID}`, {
+        fetch(`http://localhost:3000/user_projects/${userProjectId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
@@ -49,18 +52,21 @@ function CollectionCard({completedStatus, userProjectID, project, setCompletedSt
             } else {
                 setErrors(null)
                 setCompletedValue(() => newStatus)
-                setCompletedStatus(newStatus)
+                setCollectionFilter(newStatus)
             };
         })
         .catch(() => setErrors(["Unable to update collection at this time"]))
     }
 
+    // deletes user-project from collection
     function handleDelete() {
-        fetch(`http://localhost:3000/user_projects/${userProjectID}`, {
+        setShow(false);
+        fetch(`http://localhost:3000/user_projects/${userProjectId}`, {
             method: "DELETE"
         })
         .then(r => {
             if (r.ok) {
+                setUserProjectId(null);
                 setReRender(!reRender)
                 setErrors(null)
             } else {
@@ -70,10 +76,12 @@ function CollectionCard({completedStatus, userProjectID, project, setCompletedSt
         .catch(() => setErrors(["Unable to remove project from your collection at this time"]))
     }
 
-    function handleClickDelete() {
+    // renders confirm delete modal
+    function handleConfirmDelete() {
         setShow(true);
     }
 
+    // adds nproject to users collection
     function handleAddClick() {
         fetch('http://localhost:3000/user_projects', {
             method: "POST",
@@ -91,8 +99,8 @@ function CollectionCard({completedStatus, userProjectID, project, setCompletedSt
                 setErrors(json.errors)
             } else {
                 setErrors(null)
-                setInCollection(true)
-            }
+                setUserProjectId(json.id)
+            };
         })
         .catch( () => setErrors(["Could not add project to your collection"]))
     }
@@ -103,13 +111,13 @@ function CollectionCard({completedStatus, userProjectID, project, setCompletedSt
             {errors ? <ErrorMessages errors={errors} />
             :
             <Card>
-                <Link to={`/projects/${project.id}`} className="text-decoration-none">
+                <Link to={`/projects/${project.id}`} state={{from: "Collection"}} className="text-decoration-none">
                     <Card.Img variant="top" src={project.image || projectPlaceholder} alt={project.title} />
                     <Card.Body>
                         <Card.Text className="text-secondary text-capitalize text-strong">{project.title}</Card.Text>
                     </Card.Body>
                 </Link>
-                    {inCollection ?
+                    {userProjectId ?
                     <>
                         <div className="justify-content-center d-flex mt-auto">
                             <Form.Select size="sm" onChange={handleChange} className="w-50 text-secondary" defaultValue={completedValue}>
@@ -118,7 +126,7 @@ function CollectionCard({completedStatus, userProjectID, project, setCompletedSt
                                 <option value="completed">Completed</option>
                             </Form.Select>
                         </div>
-                        <Button onClick={handleClickDelete} className="btn-link text-danger mt-auto mb-1">Remove from collection</Button>
+                        <Button onClick={handleConfirmDelete} className="btn-link text-danger mt-auto mb-1">Remove from collection</Button>
                         <DeleteConfirmation showModal={show} handleClose={handleClose} handleDelete={handleDelete} />
                     </>
                     :

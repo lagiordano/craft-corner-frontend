@@ -12,22 +12,38 @@ function Projects() {
     useEffect( () => {
         document.title = "Craft Corner | Shared Projects";
         document.body.style = 'background: white;';
+        localStorage.clear();
     }, [])
+
+    const storedSearch = localStorage.getItem('projectsSearch');
+    const storedSelect = localStorage.getItem('projectsSelect');
     
     const [projects, setProjects] = useState([])
-    const [search, setSearch] = useState("")
-    const [select, setSelect] = useState("all")
+    const [search, setSearch] = useState(storedSearch || "")
+    const [select, setSelect] = useState(storedSelect || "all")
     const [errors, setErrors] = useState(null)
+
+  
 
     useEffect( () => {
         fetch("http://localhost:3000/projects")
         .then(r => r.json())
         .then(json => {
-            setProjects(json)
+            setProjects(json);
             setErrors(null)
         })
         .catch(() => setErrors(["There has been an issue loading our project information"]))
     }, []);
+
+
+
+    useEffect( () => {
+        localStorage.setItem('projectsSelect', select)
+    }, [select])
+
+    useEffect( () => {
+        localStorage.setItem('projectsSearch', search)
+    }, [search])
 
     
 
@@ -38,7 +54,6 @@ function Projects() {
     });
 
     const projectsToDisplay = filteredProjects.filter( project => project.title.toLowerCase().includes(search.toLowerCase()));
-    console.log(projectsToDisplay)
 
 
     return (
@@ -61,7 +76,7 @@ function Projects() {
                 <div className="text-secondary fs-5">Looks like there are no project matching your search. Try changing categories or trying a different search term.</div>
                 :
                 <Row xs={1} sm={2} md={3} xl={4} className="g-4 mx-2 justify-content-center d-flex">
-                    {projectsToDisplay.map( project => <ProjectCard image={project.image} title={project.title} id={project.id} key={project.id} />)}
+                    {projectsToDisplay.map( project => <ProjectCard image={project.image} title={project.title} id={project.id} key={project.id}/>)}
                 </Row>
                 }
             </>

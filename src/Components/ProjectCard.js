@@ -8,9 +8,10 @@ import projectPlaceholder from "../images/projectPlaceholder.jpg";
 
 function ProjectCard({image, title, id}) {
 
+
     return (
         <Col>
-            <Link to={`/projects/${id}`} className="text-decoration-none">
+            <Link to={`/projects/${id}` } state={{from: "Projects"}} className="text-decoration-none">
                 <Card >
                     <Card.Img variant="top" src={image || projectPlaceholder} alt={title} />
                     <Card.Body className="d-flex align-items-center justify-content-center">
@@ -24,3 +25,4 @@ function ProjectCard({image, title, id}) {
 
 
 export default ProjectCard;
+

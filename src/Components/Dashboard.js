@@ -12,40 +12,52 @@ function Dashboard() {
     useEffect( () => {
         document.title = "Craft Corner | Your Collection";
         document.body.style = 'background: white;';
+        localStorage.clear();
     }, [])
 
+    const storedSearch = localStorage.getItem('collectionSearch');
+    const storedSelect = localStorage.getItem('collectionSelect');
+    const storedCollectionFilter = localStorage.getItem('collectionFilter');
+
+
     const [collection, setCollection] = useState([]);
-    const [completedStatus, setCompletedStatus] = useState("in progress");
+    const [collectionFilter, setCollectionFilter] = useState(storedCollectionFilter || "in progress");
     const [reRender, setReRender] = useState(false)
     const [errors, setErrors] = useState(null);
-    const [search, setSearch] = useState("");
-    const [select, setSelect] = useState("all");
+    const [search, setSearch] = useState(storedSearch || "")
+    const [select, setSelect] = useState(storedSelect || "all")
 
     useEffect( () => {
-        fetch(`http://localhost:3000/collection/${completedStatus}`)
+        fetch(`http://localhost:3000/collection/${collectionFilter}`)
         .then(r => r.json())
         .then(json => {
             setCollection(json)
             setErrors(null)
         })
         .catch(() => setErrors(["There has been an issue loading your project information"]))
-    }, [completedStatus, reRender])
+    }, [collectionFilter, reRender])
 
 
-    function handleCollectionClick(e) {
-        setCompletedStatus(e.target.value)
-        setReRender(!reRender)
+    useEffect( () => {
+        localStorage.setItem('collectionFilter', collectionFilter)
+    }, [collectionFilter])
+
+    useEffect( () => {
+        localStorage.setItem('collectionSelect', select)
+    }, [select])
+
+    useEffect( () => {
+        localStorage.setItem('collectionSearch', search)
+    }, [search])
+
+  
+
+
+
+    function handleCollectionFilterClick(e) {
+        setCollectionFilter(e.target.value);
+        setReRender(!reRender);
     };
-
-    function handleSharedByMeClick() {
-        fetch("http://localhost:3000/shared_by_user")
-        .then(r => r.json())
-        .then(json => {
-            setCollection(json)
-            setErrors(null)
-        })
-        .catch(() => setErrors(["There has been as issue loading the projects you have shared"]))
-    }
 
 
     const filteredProjects = collection.filter( item => {
@@ -64,11 +76,11 @@ function Dashboard() {
                 <h2 className="mb-4 mb-md-0 ms-lg-5">Your Collection</h2>
             </Col>
             <Col sm={12} md={8} className="d-flex justify-content-evenly">
-                <Button variant="outline-secondary" size="sm" className="px-3" onClick={handleCollectionClick} value="all">All</Button>
-                <Button variant="outline-secondary" size="sm" onClick={handleCollectionClick} value="in progress">In Progress</Button>
-                <Button variant="outline-secondary" size="sm" onClick={handleCollectionClick} value="wish list">Wish List</Button>
-                <Button variant="outline-secondary" size="sm" onClick={handleCollectionClick} value="completed">Completed</Button>
-                <Button variant="outline-secondary" size="sm" onClick={handleSharedByMeClick} >Shared By You</Button>
+                <Button variant="outline-secondary" size="sm" className="px-3" onClick={handleCollectionFilterClick} value="all" active={collectionFilter === "all" ? true : false}>All</Button>
+                <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="in progress" active={collectionFilter === "in progress" ? true : false}>In Progress</Button>
+                <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="wish list" active={collectionFilter === "wish list" ? true : false}>Wish List</Button>
+                <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="completed" active={collectionFilter === "completed" ? true : false}>Completed</Button>
+                <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="shared by user" active={collectionFilter === "shared by user" ? true : false}>Shared By You</Button>
             </Col>
         </Row>
         <Container>
@@ -84,7 +96,7 @@ function Dashboard() {
                 <h5 className="text-secondary">No projects in your collection match your selection, try changing categories or head to our projects page to find some inspiration.</h5>
                 :
                 <Row xs={1} sm={2} md={3} xl={4} className="g-4 mx-2 justify-content-center d-flex">
-                    {projectsToDisplay.map( item => <CollectionCard project={item.project} completedStatus={item.completed_status} userProjectID={item.id} key={item.id} setCompletedStatus={setCompletedStatus} setReRender={setReRender} reRender={reRender}/>)}
+                    {projectsToDisplay.map( item => <CollectionCard project={item.project} completedStatus={item.completed_status} key={item.id} setCollectionFilter={setCollectionFilter} setReRender={setReRender} reRender={reRender}/>)}
                 </Row>
                 }
             </>

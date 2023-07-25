@@ -12,14 +12,16 @@ function AddProject() {
     useEffect( () => {
         document.title = "Craft Corner | Add Project";
         document.body.style = 'background: rgb(250,223,223);';
-    })
+        localStorage.clear();
+    }, [])
     
 
     const navigate = useNavigate();
     const [errors, setErrors] = useState(null);
+    const [hasLink, setHasLink] = useState(true)
 
     const [newProject, setNewProject] = useState({
-        url: null,
+        url: "",
         category: "",
         completedStatus: "",
         description: "", 
@@ -27,13 +29,16 @@ function AddProject() {
         image: ""
     })
 
+    function handleHasLinkChange(e){
+        setHasLink(() => e.target.value)
+    }
+
     function handleImageChange(e) {
         setNewProject({
             ...newProject, 
             image: e.target.files[0]
         })
     }
-
 
     function handleCategorySelect(e) {
         setNewProject({
@@ -133,31 +138,51 @@ function AddProject() {
                                 </Col>
                             </Row>
                             <Row className="p-2">
+                                <Col sm={12} lg={6}>
+                                    <Form.Label>I have a website link to the project:</Form.Label>
+                                </Col> 
+                                <Col sm={12} lg={6}>
+                                    <Form.Check inline required defaultChecked name="link?" label="Yes" value={true} type="radio" onChange={handleHasLinkChange} />
+                                    <Form.Check inline required name="link?" label="No" value={false} type="radio" onChange={handleHasLinkChange} />
+                                </Col>
+                            </Row>
+
+                            { 
+                            hasLink ? 
+                            <Row className="p-2">
                                 <Col xs={12} lg={2}>
                                     <Form.Label>Link:</Form.Label>
                                 </Col>
                                 <Col xs={12} lg={10}>
                                     <Form.Control type="url" name="url" placeholder="example.com/craftproject" value={newProject.url} onChange={handleFormChange} />
-                                    <Form.Text className="ps-1">If project is from another website, copy the url/link here</Form.Text>
                                 </Col>
                             </Row>
-                            <Row className="p-2">
-                                <Col xs={12} lg={2}>
-                                    <Form.Label>Upload image:</Form.Label>
-                                </Col>
-                                <Col xs={12} lg={10}>
-                                    <Form.Control type="file" name="image" onChange={handleImageChange}/>
-                                    <Form.Text className="ps-1">Not required if you provide a url (website link) to the project</Form.Text>
-                                </Col>
-                            </Row>
-                            <Row className="p-2">
-                                <Col xs={12} lg={2}>
-                                    <Form.Label>Description:</Form.Label>
-                                </Col>
-                                <Col xs={12} lg={10}>
-                                    <Form.Control required as="textarea" name="description" rows={10} onChange={handleFormChange} />
-                                </Col>
-                            </Row>
+                            :
+                            null
+                            }
+
+                            { hasLink ? 
+                            null 
+                            :
+                            <>
+                                <Row className="p-2">
+                                    <Col xs={12} lg={2}>
+                                        <Form.Label>Upload image:</Form.Label>
+                                    </Col>
+                                    <Col xs={12} lg={10}>
+                                        <Form.Control type="file" accept="image/*" name="image" onChange={handleImageChange}/>
+                                    </Col>
+                                </Row>
+                                <Row className="p-2">
+                                    <Col xs={12} lg={2}>
+                                        <Form.Label>Description:</Form.Label>
+                                    </Col>
+                                    <Col xs={12} lg={10}>
+                                        <Form.Control required as="textarea" name="description" rows={10} onChange={handleFormChange} />
+                                    </Col>
+                                </Row>
+                            </> }
+
                             <Row className="p-2">
                                 <Col xs={12} lg={2}>
                                     <Form.Label>Your Progress:</Form.Label>

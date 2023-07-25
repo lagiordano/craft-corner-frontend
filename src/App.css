@@ -45,7 +45,7 @@ footer {
 @media(min-width: 992px){
   .project{
     width: 90%;
-    height: 50vh;
+    height: 45vh;
   }
 }
 
@@ -58,3 +58,6 @@ button.btn-link:active{
   background-color: white;
 }
 
+a.active{
+  text-decoration: underline;
+}
