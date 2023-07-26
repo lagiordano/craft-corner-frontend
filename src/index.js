@@ -4,7 +4,7 @@ import './custom.scss'
 // import 'bootstrap/dist/css/bootstrap.css';
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import './index.css';
-import App from './App';
+import App from './Components/App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 

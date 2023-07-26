@@ -28,7 +28,7 @@ function Dashboard() {
     const [select, setSelect] = useState(storedSelect || "all")
 
     useEffect( () => {
-        fetch(`http://localhost:3000/collection/${collectionFilter}`)
+        fetch(`/collection/${collectionFilter}`)
         .then(r => r.json())
         .then(json => {
             setCollection(json)
@@ -51,7 +51,6 @@ function Dashboard() {
     }, [search])
 
   
-
 
 
     function handleCollectionFilterClick(e) {

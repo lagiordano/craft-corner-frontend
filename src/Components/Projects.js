@@ -26,7 +26,7 @@ function Projects() {
   
 
     useEffect( () => {
-        fetch("http://localhost:3000/projects")
+        fetch("/projects")
         .then(r => r.json())
         .then(json => {
             setProjects(json);

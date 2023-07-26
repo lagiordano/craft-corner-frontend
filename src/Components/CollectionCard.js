@@ -16,13 +16,14 @@ function CollectionCard({completedStatus, project, setCollectionFilter, setReRen
     const [errors, setErrors] = useState(null)
     const [completedValue, setCompletedValue] = useState(completedStatus)
     const [userProjectId, setUserProjectId] = useState(null);
+  
     
     const [show, setShow] = useState(false)
     const handleClose = () => setShow(false)
     
     // confirms if project is currently in collection
     useEffect( () => {
-        fetch(`http://localhost:3000/check_in_collection/${project.id}`)
+        fetch(`/check_in_collection/${project.id}`)
         .then(r => r.json())
         .then(json => {
             if (json.user_project_id !== null) {
@@ -38,7 +39,7 @@ function CollectionCard({completedStatus, project, setCollectionFilter, setReRen
     //  updates completed status of user-project
     function handleChange(e) {
         const newStatus = e.target.value
-        fetch(`http://localhost:3000/user_projects/${userProjectId}`, {
+        fetch(`/user_projects/${userProjectId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
@@ -61,7 +62,7 @@ function CollectionCard({completedStatus, project, setCollectionFilter, setReRen
     // deletes user-project from collection
     function handleDelete() {
         setShow(false);
-        fetch(`http://localhost:3000/user_projects/${userProjectId}`, {
+        fetch(`/user_projects/${userProjectId}`, {
             method: "DELETE"
         })
         .then(r => {
@@ -83,7 +84,7 @@ function CollectionCard({completedStatus, project, setCollectionFilter, setReRen
 
     // adds nproject to users collection
     function handleAddClick() {
-        fetch('http://localhost:3000/user_projects', {
+        fetch('/user_projects', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -104,11 +105,13 @@ function CollectionCard({completedStatus, project, setCollectionFilter, setReRen
         })
         .catch( () => setErrors(["Could not add project to your collection"]))
     }
-
+    
+    
 
     return (
         <Col>
-            {errors ? <ErrorMessages errors={errors} />
+            {errors ? 
+            <ErrorMessages errors={errors} />
             :
             <Card>
                 <Link to={`/projects/${project.id}`} state={{from: "Collection"}} className="text-decoration-none">
@@ -117,23 +120,23 @@ function CollectionCard({completedStatus, project, setCollectionFilter, setReRen
                         <Card.Text className="text-secondary text-capitalize text-strong">{project.title}</Card.Text>
                     </Card.Body>
                 </Link>
-                    {userProjectId ?
-                    <>
-                        <div className="justify-content-center d-flex mt-auto">
-                            <Form.Select size="sm" onChange={handleChange} className="w-50 text-secondary" defaultValue={completedValue}>
-                                <option value="wish list">Wish List</option>
-                                <option value="in progress">In Progress</option>
-                                <option value="completed">Completed</option>
-                            </Form.Select>
-                        </div>
-                        <Button onClick={handleConfirmDelete} className="btn-link text-danger mt-auto mb-1">Remove from collection</Button>
-                        <DeleteConfirmation showModal={show} handleClose={handleClose} handleDelete={handleDelete} />
-                    </>
-                    :
-                    <div className="justify-content-center d-flex mt-auto mb-4">
-                        <Button variant="primary" className="text-white" onClick={handleAddClick}>Add to Collection</Button>
+                {userProjectId ?
+                <>
+                    <div className="justify-content-center d-flex mt-auto">
+                        <Form.Select size="sm" onChange={handleChange} className="w-50 text-secondary" defaultValue={completedValue}>
+                            <option value="wish list">Wish List</option>
+                            <option value="in progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                        </Form.Select>
                     </div>
-                    }
+                    <Button onClick={handleConfirmDelete} className="btn-link text-danger mt-auto mb-1">Remove from collection</Button>
+                    <DeleteConfirmation showModal={show} handleClose={handleClose} handleDelete={handleDelete} />
+                </>
+                :
+                <div className="justify-content-center d-flex mt-auto mb-4">
+                    <Button variant="primary" className="text-white" onClick={handleAddClick}>Add to Collection</Button>
+                </div>
+                }
             </Card>
             }
         </Col>
