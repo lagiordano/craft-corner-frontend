@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -13,6 +13,8 @@ function Login({setCurrentUser}) {
     const [errors, setErrors] = useState(null)
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false)
+
+    const { state } = useLocation();
     
     useEffect( () => {
         document.title = "Craft Corner | Login";
@@ -43,8 +45,13 @@ function Login({setCurrentUser}) {
             if (r.ok) {
                 r.json()
                 .then(json => setCurrentUser(json))
-                .then(() => console.log("logged in"))
-                .then(() => navigate("/dashboard"))
+                .then(() => {
+                    if (state) {
+                        navigate(state.location)
+                    } else {
+                        navigate("/dashboard")
+                    };
+                })
             } else {
                 r.json()
                 .then(json => setErrors(json.errors))

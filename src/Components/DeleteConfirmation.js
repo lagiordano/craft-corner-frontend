@@ -10,6 +10,7 @@ function DeleteConfirmation ({showModal, handleClose, handleDelete }) {
         onHide={handleClose}
         backdrop="static"
         keyboard={false}
+        centered
       >
           <Modal.Header closeButton>
             <Modal.Title>Confirm Removal</Modal.Title>

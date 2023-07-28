@@ -129,7 +129,7 @@ function CollectionCard({completedStatus, project, setCollectionFilter, setReRen
                             <option value="completed">Completed</option>
                         </Form.Select>
                     </div>
-                    <Button onClick={handleConfirmDelete} className="btn-link text-danger mt-auto mb-1">Remove from collection</Button>
+                    <Button onClick={handleConfirmDelete} className="btn-link text-danger mt-auto mb-1">Remove</Button>
                     <DeleteConfirmation showModal={show} handleClose={handleClose} handleDelete={handleDelete} />
                 </>
                 :

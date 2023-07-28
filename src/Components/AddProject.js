@@ -76,9 +76,6 @@ function AddProject() {
 
         fetch("/projects", {
             method: "POST",
-            headers: {
-                
-            },
             body: formData,
         })
         .then(r => {

@@ -6,8 +6,9 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import CollectionCard from "./CollectionCard";
+import { Link } from "react-router-dom";
 
-function Dashboard() {
+function Dashboard({currentUser}) {
 
     useEffect( () => {
         document.title = "Craft Corner | Your Collection";
@@ -51,8 +52,6 @@ function Dashboard() {
     }, [search])
 
   
-
-
     function handleCollectionFilterClick(e) {
         setCollectionFilter(e.target.value);
         setReRender(!reRender);
@@ -72,7 +71,7 @@ function Dashboard() {
         <>
         <Row className="py-4 my-2 bg-warning text-secondary">
             <Col sm={12} md={4} className="d-flex justify-content-center">
-                <h2 className="mb-4 mb-md-0 ms-lg-5">Your Collection</h2>
+                <h2 className="mb-4 mb-md-0 ms-lg-5">{currentUser.username}'s Collection</h2>
             </Col>
             <Col sm={12} md={8} className="d-flex justify-content-evenly">
                 <Button variant="outline-secondary" size="sm" className="px-3" onClick={handleCollectionFilterClick} value="all" active={collectionFilter === "all" ? true : false}>All</Button>
@@ -92,7 +91,10 @@ function Dashboard() {
             :
             <>
                 {(projectsToDisplay.length) === 0 ? 
-                <h5 className="text-secondary">No projects in your collection match your selection, try changing categories or head to our projects page to find some inspiration.</h5>
+                <>
+                <h5 className="text-secondary p-2">No projects in your collection match your selection, try changing changing your category filter to 'All' or clearing your search.</h5> 
+                <h5 className="text-secondary p-2">Haven't added any projects yet? No worries! Head over to <Link to="/projects">Projects</Link> for inspiration or you can <Link to="/projects/addproject">Add a New Project</Link> yourself.</h5>
+                </>
                 :
                 <Row xs={1} sm={2} md={3} xl={4} className="g-4 mx-2 justify-content-center d-flex">
                     {projectsToDisplay.map( item => <CollectionCard project={item.project} completedStatus={item.completed_status} key={item.id} setCollectionFilter={setCollectionFilter} setReRender={setReRender} reRender={reRender}/>)}

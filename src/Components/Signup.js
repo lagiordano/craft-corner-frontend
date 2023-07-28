@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
@@ -14,6 +14,8 @@ function Signup({setCurrentUser}) {
     const [errors, setErrors] = useState(null);
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
+
+    const { state } = useLocation();
 
     useEffect( () => {
         document.title = "Craft Corner | Create Account";
@@ -56,7 +58,13 @@ function Signup({setCurrentUser}) {
             if (r.ok) {
                 r.json()
                 .then(json => setCurrentUser(json))
-                .then(() => navigate("/dashboard"))
+                .then(() => {
+                    if (state) {
+                        navigate(state.location)
+                    } else {
+                        navigate("/dashboard")
+                    };
+                })
             } else {
                 r.json() 
                 .then(json => setErrors(json.errors))
@@ -101,7 +109,7 @@ function Signup({setCurrentUser}) {
                         <Button type="submit" variant="primary" disabled={isLoading} className="text-white mt-3 ms-2">Create Account</Button>
                     </Form>
                 </div>
-        </Container>
+            </Container>
     )
 
 

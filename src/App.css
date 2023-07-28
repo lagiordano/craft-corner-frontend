@@ -37,7 +37,7 @@ footer {
 
   .project{
     width: 90%;
-    height: 40vh;
+    height: 45vh;
   }
 
   #login{
@@ -49,7 +49,7 @@ footer {
 @media(min-width: 992px){
   .project{
     width: 90%;
-    height: 45vh;
+    height: 40vh;
   }
 
   #signup{
@@ -58,6 +58,10 @@ footer {
 
   #login{
     width:50%;
+  }
+
+  #project-container{
+    width: 70%
   }
 }
 
@@ -74,3 +78,9 @@ a.active{
   text-decoration: underline;
 }
 
+
+#home-projects{
+  width:100%;
+  padding: 0;
+  margin: 0;
+}
