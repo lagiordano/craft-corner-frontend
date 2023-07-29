@@ -186,7 +186,7 @@ function AddProject() {
                                 <Form.Check inline required name="completedStatus" label="In Progress" type="radio" value="in progress" onChange={handleFormChange}/>
                                 <Form.Check inline required name="completedStatus" label="Wish List" type="radio" value="wish list" onChange={handleFormChange} />
                                 <Form.Check inline required name="completedStatus" label="Completed" type="radio" value="completed" onChange={handleFormChange}/><br/>
-                                <Form.Text className="ps-1">Have you already started this project? Select a status above to help sort your collection</Form.Text>
+                                <Form.Text className="ps-1 text-light">Have you already started this project? Select a status above to help sort your collection</Form.Text>
                             </Col>
                         </Row>
                         <Row className="p-2">

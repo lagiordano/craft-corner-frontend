@@ -30,20 +30,20 @@ function NavBar({currentUser, setCurrentUser}) {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto" activeKey={location.pathname}>
+            { currentUser ? null : <Nav.Link href="/" className="text-primary fs-5">Home</Nav.Link> }
             <Nav.Link href="/projects" className="text-primary fs-5">Projects</Nav.Link>
-            <Nav.Link href="/dashboard" className="text-primary fs-5">Your Collection</Nav.Link>
-            <Nav.Link href="/projects/addproject" className="text-primary fs-5">Add New Project</Nav.Link>
+            { currentUser ? <Nav.Link href="/dashboard" className="text-primary fs-5">Your Collection</Nav.Link> : null }
           </Nav>
-          <Nav>
+          <Nav activeKey={location.pathname} className="d-flex align-items-center">
             {currentUser ? 
               <>
-                <Nav.Link href="#"><Button variant="outline-primary">Account</Button></Nav.Link>
-                <Button className="text-white" onClick={handleLogout}>Logout</Button>
+                <Nav.Link href="/account" className="text-primary fs-5 pe-lg-3">Account</Nav.Link>
+                <Button className="text-white nav-button" onClick={handleLogout}>Logout</Button>
               </>
             :
             <>
-              <Nav.Link href="/login"><Button variant="outline-primary">Login</Button></Nav.Link>
-              <Nav.Link href="/signup"><Button className="text-white">Create Account</Button></Nav.Link>
+              <Nav.Link href="/login" className="text-primary fs-5 pe-lg-4">Login</Nav.Link>
+              <Button className="text-white nav-button" onClick={() => navigate("/signup")}>Create Account</Button>
             </>
             }
           </Nav>

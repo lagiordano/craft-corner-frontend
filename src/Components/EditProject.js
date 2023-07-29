@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -18,10 +18,15 @@ function EditProject() {
     const [updatedProject, setUpdatedProject] = useState({
         title: project.title, 
         category: project.category,
-        url: null,
+        url: "",
         image: null,
         description: project.description
     });
+
+    useEffect( () => {
+        document.body.style = 'background: rgb(250,223,223);';
+        document.title = "Craft Corner | Edit Project";
+    }, [])
 
     function handleFormChange(e) {
         const name = e.target.name;
@@ -55,7 +60,7 @@ function EditProject() {
         const formData = new FormData()
         formData.append('title', updatedProject.title);
         formData.append('category', updatedProject.category);
-        if (updatedProject.url) {
+        if (updatedProject.url !== "") {
             formData.append('url', updatedProject.url)
         };
         if (updatedProject.description) {

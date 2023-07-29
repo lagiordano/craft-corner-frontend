@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+
 
 function Login({setCurrentUser}) {
 
@@ -61,7 +62,7 @@ function Login({setCurrentUser}) {
 
     return (
         <Container id="login" className="mt-4 mt-md-5">
-            <div className="bg-white text-secondary border-primary border rounded text-start my-3 my-md-4 m-lg-5 p-2 p-md-3 p-lg-4">
+            <div className="bg-white text-secondary border-primary border rounded text-start my-3 my-md-4 m-lg-5 p-2 p-md-3 px-lg-4">
                 <h1 className="text-center p-2">Login to Account</h1>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className="p-2">
@@ -81,7 +82,8 @@ function Login({setCurrentUser}) {
                     </div>
                     :
                     null}
-                    <Button type="submit" variant="primary" disabled={isLoading} className="text-white m-2">Login</Button>
+                    <Button type="submit" variant="primary" disabled={isLoading} className="text-white mt-3 ms-2">Login</Button>
+                    <p className="pt-3 px-2">Don't have an account yet? Create one <Link to="/signup">here</Link></p>
                 </Form>
             </div>
         </Container>

@@ -71,13 +71,13 @@ function Dashboard({currentUser}) {
         <>
         <Row className="py-4 my-2 bg-warning text-secondary">
             <Col sm={12} md={4} className="d-flex justify-content-center">
-                <h2 className="mb-4 mb-md-0 ms-lg-5">{currentUser.username}'s Collection</h2>
+                <h2 className="mb-4 mb-md-0 ms-2 ms-lg-4">{currentUser.username}'s Collection</h2>
             </Col>
             <Col sm={12} md={8} className="d-flex justify-content-evenly">
-                <Button variant="outline-secondary" size="sm" className="px-3" onClick={handleCollectionFilterClick} value="all" active={collectionFilter === "all" ? true : false}>All</Button>
                 <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="in progress" active={collectionFilter === "in progress" ? true : false}>In Progress</Button>
                 <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="wish list" active={collectionFilter === "wish list" ? true : false}>Wish List</Button>
                 <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="completed" active={collectionFilter === "completed" ? true : false}>Completed</Button>
+                <Button variant="outline-secondary" size="sm" className="px-3" onClick={handleCollectionFilterClick} value="all" active={collectionFilter === "all" ? true : false}>All</Button>
                 <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="shared by user" active={collectionFilter === "shared by user" ? true : false}>Shared By You</Button>
             </Col>
         </Row>

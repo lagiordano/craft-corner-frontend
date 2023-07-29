@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
@@ -74,23 +74,23 @@ function Signup({setCurrentUser}) {
 
     return (
         <Container id="signup" >
-                <div className="bg-white my-3 my-md-4 m-lg-5 p-2 p-md-3 p-lg-4 text-secondary border-primary border rounded text-start">
+                <div className="bg-white my-3 my-md-4 m-lg-5 p-2 p-md-3 px-lg-4 text-secondary border-primary border rounded text-start">
                     <h1 className="text-center p-2">Create an Account</h1>
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="p-2">
                             <Form.Label>Username:</Form.Label>
                             <Form.Control required type="text" name="username" value={signupDetails.username} onChange={handleSignupChange} placeholder="Enter username..."/>
-                            <Form.Text>This will appear on projects that you add to Craft Corner</Form.Text>
+                            <Form.Text className="text-light">This will appear on projects that you add to Craft Corner</Form.Text>
                         </Form.Group>
                         <Form.Group className="p-2">
                             <Form.Label>Email Address:</Form.Label>
                             <Form.Control required type="email" name="email" value={signupDetails.email} onChange={handleSignupChange} placeholder="Enter email..."/>
-                            <Form.Text>This will not be shared with anyone else</Form.Text>
+                            <Form.Text className="text-light">This will not be shared with anyone else</Form.Text>
                         </Form.Group>
                         <Form.Group className="p-2">
                             <Form.Label>Password:</Form.Label>
                             <Form.Control required type="password" name="password" value={signupDetails.password} onChange={handleSignupChange} placeholder="Enter password..."/>
-                            <Form.Text>Your password must be at least 8 characters long and contain at least: 1 uppercase letter, 1 lowercase letter, 1 number</Form.Text>
+                            <Form.Text className="text-light">Your password must be at least 8 characters long and contain at least: 1 uppercase letter, 1 lowercase letter, 1 number</Form.Text>
                         </Form.Group>
                         <Form.Group className="p-2">
                             <Form.Label>Password Confirmation:</Form.Label>
@@ -107,6 +107,7 @@ function Signup({setCurrentUser}) {
                         null}
                         <Form.Check required className="p-2 ms-4" type="checkbox" label="I agree to the terms and conditions ADD LINK WHEN READY" />
                         <Button type="submit" variant="primary" disabled={isLoading} className="text-white mt-3 ms-2">Create Account</Button>
+                        <p className="pt-4 px-2">Already have an account? Log in <Link to="/login">here</Link></p>
                     </Form>
                 </div>
             </Container>

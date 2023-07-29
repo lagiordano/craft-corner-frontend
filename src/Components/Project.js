@@ -131,7 +131,7 @@ function Project({currentUser}) {
                             <Button className="mb-2 mt-1 me-3 text-white"variant="primary" onClick={handleAddClick}>Add to Collection</Button>
                         }
                         {
-                            (currentUser && project.shared_by === currentUser) ?
+                            currentUser && project.shared_by === currentUser.username ?
                             <Button className="mb-2 mt-1 text-white" variant="primary" onClick={() => navigate(`/projects/${project.id}/editproject`, {state: {project: project}})}>Edit Project</Button>
                             :
                             null

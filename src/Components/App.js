@@ -14,6 +14,8 @@ import Login from './Login';
 import ProtectedUserRoute from './ProtectedUserRoute';
 import ProtectedVisitorRoute from './ProtectedVisitorRoute';
 import EditProject from './EditProject';
+import AccountInformation from './AccountInformation';
+import ProtectedAccountRoute from './ProtectedAccountRoute';
 
 function App() {
 
@@ -64,6 +66,9 @@ function App() {
           <Route exact path="/dashboard" element={<Dashboard currentUser={currentUser}/> } />
           <Route exact path="/projects/addproject" element={<AddProject />} />
           <Route exact path="/projects/:id/editproject" element={<EditProject />} />
+        </Route>
+        <Route element={<ProtectedAccountRoute currentUser={currentUser} />} >
+          <Route exact path="/account" element={<AccountInformation currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
         </Route>
         </>
         }

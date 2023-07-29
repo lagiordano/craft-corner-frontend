@@ -43,12 +43,12 @@ function Home() {
                 .then(console.log(errors))
             };
         });
-    });
+    }, []);
 
     return (
         <>
         <Container className="text-secondary my-2 my-md-3 mt-lg-5 mb-lg-3 py-2">
-            <UnauthorizedModal showModal={show} handleClose={handleClose}/>
+            <UnauthorizedModal showModal={show} handleClose={handleClose} state={state}/>
             <Row>
                 <Col sm={12} lg={6}>
                     <h1 className="pb-2">Get Ready... Get Set... Craft!</h1>

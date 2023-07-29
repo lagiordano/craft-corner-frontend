@@ -15,6 +15,10 @@ footer {
   bottom: 0;
 }
 
+.btn-outline-primary:hover{
+  color: white;
+}
+
 @media (max-width: 576px){
   .card-img-top{
     height: 40vh;
@@ -83,4 +87,8 @@ a.active{
   width:100%;
   padding: 0;
   margin: 0;
+}
+
+.nav-button{
+  height: 70%;
 }
