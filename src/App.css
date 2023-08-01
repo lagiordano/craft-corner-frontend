@@ -92,3 +92,20 @@ a.active{
 .nav-button{
   height: 70%;
 }
+
+
+
+
+ul li svg.checklist-icon{
+  display: none;
+}
+
+li.valid{
+  color: rgb(83, 165, 81);
+  font-size: smaller;
+}
+
+li.invalid{
+  color: rgb(203,68,74);
+  font-size:smaller;
+}

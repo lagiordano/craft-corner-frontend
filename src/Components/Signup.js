@@ -3,6 +3,7 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
+import PasswordChecklist from "react-password-checklist";
 
 function Signup({setCurrentUser}) {
     const [signupDetails, setSignupDetails] = useState({
@@ -22,11 +23,29 @@ function Signup({setCurrentUser}) {
         document.body.style = 'background: rgb(250,223,223);';
     }, [])
 
+    // const PASSWORD_VALIDATION = [
+    //     {label: "At least one uppercase letter", pattern: new RegExp(/.*[A_Z]/)},
+    //     {label: "At least one lowercase letter", pattern: new RegExp(/.*[a-z]/)},
+    //     {label: "At least one number", pattern: new RegExp(/.*\d/)},
+    // ]
     // const PASSWORD_UPPERCASE = new RegExp(/.*[A_Z]/);
     // const PASSWORD_LOWERCASE = new RegExp(/.*[a-z]/);
     // const PASSWORD_NUMBER = new RegExp(/.*\d/);
     // const PASSWORD_LENGTH = new RegExp(/.{8,}$/);
 
+    // if (!password.match(PASSWORD_UPPERCASE)) {
+    //     setErrors([...errors, "At least one uppercase letter"])
+    // } 
+    // if (!password.match(PASSWORD_LOWERCASE)) {
+    //     setErrors([...errors, "At least one lower case "])
+    // }
+
+    // const rules = [
+    //     {label: "At least one uppercase", pattern: PASSWORD_UPPERCASE},
+    //     {label: "At least one lowercase", pattern: PASSWORD_LOWERCASE},
+    //     {label: "At least one number", pattern: PASSWORD_NUMBER},
+    //     {label: "At least 8 characters", pattern: PASSWORD_LENGTH}
+    // ];
 
 
     function handleSignupChange(e) {
@@ -48,7 +67,7 @@ function Signup({setCurrentUser}) {
             },
             body: JSON.stringify({
                 username: signupDetails.username,
-                email: signupDetails.email,
+                email: signupDetails.email.toLowerCase(),
                 password: signupDetails.password, 
                 password_confirmation: signupDetails.passwordConfirmation
             })
@@ -66,10 +85,10 @@ function Signup({setCurrentUser}) {
                     };
                 })
             } else {
-                r.json() 
-                .then(json => setErrors(json.errors))
+                r.json().then(json => json.errors ? setErrors(json.errors) : setErrors(["Could not create account"]))
             }
         })
+        .catch(() => setErrors(["Could not create account"]))
     }
 
     return (
@@ -96,6 +115,20 @@ function Signup({setCurrentUser}) {
                             <Form.Label>Password Confirmation:</Form.Label>
                             <Form.Control required type="password" name="passwordConfirmation" value={signupDetails.passwordConfirmation} onChange={handleSignupChange} placeholder="Confirm Password..." />
                         </Form.Group>
+                        <PasswordChecklist
+                            rules={["minLength", "capital", "lowercase","number", "match"]}
+                            minLength={8}
+                            value={signupDetails.password}
+                            valueAgain={signupDetails.passwordConfirmation}
+                            className="ps-1 pb-1"
+                            messages={{
+                                minLength: "Must be at least 8 characters",
+                                capital: "Must contain at least one uppercase letter",
+                                lowercase: "Must contian at least one lowercase letter",
+                                number: "Must contain at least one number",
+                                match: "Password must match password confirmation"
+                            }}
+                        />
                         {errors ?
                         <div className="text-danger pt-2 px-2">
                             Unable to create account:

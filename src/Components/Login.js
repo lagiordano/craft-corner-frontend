@@ -33,19 +33,22 @@ function Login({setCurrentUser}) {
 
     function handleSubmit(e){
         e.preventDefault();
-        setIsLoading(true)
+        setIsLoading(true);
+
         fetch("/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(loginDetails)
+            body: JSON.stringify({
+                email: loginDetails.email.toLowerCase(),
+                password: loginDetails.password
+            })
         })
         .then(r => {
-            setIsLoading(false)
             if (r.ok) {
-                r.json()
-                .then(json => setCurrentUser(json))
+                setErrors(null);
+                r.json().then(json => setCurrentUser(json))
                 .then(() => {
                     if (state) {
                         navigate(state.location)
@@ -55,9 +58,13 @@ function Login({setCurrentUser}) {
                 })
             } else {
                 r.json()
-                .then(json => setErrors(json.errors))
+                .then(json => {
+                    setIsLoading(false)
+                    json.errors ? setErrors(json.errors) : setErrors(["Could not log you in"])
+                })
             }
         })
+        .catch(() => setErrors(["Could not log you in"]))
     };
 
     return (

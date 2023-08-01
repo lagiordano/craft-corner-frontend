@@ -6,6 +6,7 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import DeleteAccountmodal from "./DeleteAccountModal";
+import ErrorMessages from "./ErrorMessages";
 
 function AccountInformation ({currentUser, setCurrentUser}) {
 
@@ -26,12 +27,14 @@ function AccountInformation ({currentUser, setCurrentUser}) {
         document.body.style = 'background: rgb(250,223,223);';
     }, [])
 
+    
     function handleUpdateClick() {
         setButtonDisabled(true)
         setFormDisabled(false)
     }
 
     function handleCancelClick() {
+        setErrors(null);
         setUsername(currentUser.username);
         setEmail(currentUser.email);
         setFormDisabled(true);
@@ -54,19 +57,19 @@ function AccountInformation ({currentUser, setCurrentUser}) {
         })
         .then(r => {
             if (r.ok) {
-                console.log("updated")
                 setFormDisabled(true);
                 setIsLoading(false);
                 setButtonDisabled(false);
+                setErrors(null);
             } else {
                 r.json().then(json => {
-                    setErrors(() => json.errors)
-                    console.log(errors)
+                    json.errors ? setErrors(json.errors) : setErrors(["Could not update account details at this time"]);
                     setIsLoading(false);
                 })
                 
             }
         })
+        .catch(() => setErrors(["Could not update account details at this time"]))
     }
     
     function handleDelete() {
@@ -76,14 +79,15 @@ function AccountInformation ({currentUser, setCurrentUser}) {
             method: "DELETE"
         })
         .then(r => {
+            setShow(false)
             if (r.ok) {
-                setShow(false)
-                setCurrentUser(null)
+                setCurrentUser(null);
             } else {
                 setErrors(["Could not delete account at this time"])
-                console.log(errors)
+                setIsLoading(false);
             }
         })
+        .catch(() => setErrors(["Could not delete account at this time"]))
     }
 
 
@@ -109,6 +113,12 @@ function AccountInformation ({currentUser, setCurrentUser}) {
                                 <Form.Control disabled={formDisabled} type="email" value={email} onChange={(e => setEmail(e.target.value))} />
                             </Col>
                         </Row>
+                        {errors ? 
+                        <Row>
+                            <ErrorMessages errors={errors} />
+                        </Row>
+                        :
+                        null }
                         <Row className={formDisabled ? "d-none" : "p-2"}>
                             <Col className="d-flex justify-content-end">
                                 <Button onClick={handleCancelClick} variant="secondary">Cancel</Button>

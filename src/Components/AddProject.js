@@ -147,7 +147,7 @@ function AddProject() {
                         }
 
                         { hasLink ? 
-                        null 
+                        null
                         :
                         <>
                             <Row className="p-2">
@@ -188,7 +188,7 @@ function AddProject() {
                         <Row className="p-2">
                             <Col className="d-flex justify-content-center">
                                 <Button variant="secondary" disabled={isLoading} className="p-2 m-3" onClick={() => navigate(-1)}>Cancel</Button>
-                                <Button variant="primary" type="submit" disabled={isLoading} className="p-2 text-white m-3">Add Project</Button>
+                                <Button variant="primary" type="submit" disabled={isLoading} className="p-2 text-white m-3">{isLoading ? "Adding..." : "Add Project"}</Button>
                             </Col>
                         </Row>
                         
