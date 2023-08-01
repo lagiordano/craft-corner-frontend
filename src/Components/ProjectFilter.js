@@ -21,7 +21,7 @@ function ProjectFilter({search, setSearch, select, setSelect }) {
     return (
         <Row className="w-100 mx-2 d-flex align-items-center">
             <Col lg={3}>
-                <Button variant="primary" className="text-white w-100 mt-3 my-lg-4 py-lg-2" size="lg" onClick={() => navigate("/projects/addproject")}>Add Project</Button>
+                <Button variant="primary" className="text-white w-100 h-100 mt-3 my-lg-4 py-lg-2" size="lg" onClick={() => navigate("/projects/addproject")}>Add Project</Button>
             </Col>
             <Col lg={4}>
                 <FloatingLabel label="Category:" className="my-3 my-lg-4 p-0">

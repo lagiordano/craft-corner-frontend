@@ -6,14 +6,11 @@ import Col from "react-bootstrap/Col";
 function ErrorMessages({errors}) {
 
     return (
-        <Container>
-            <Row
-            className="d-flex, justify-content-center mt-5">
-                <Col xs={10} md={8} lg={6} className="bg-white border border-danger text-danger rounded text-start p-3">
-                    <h6>Sorry, looks like there has been an error/s:</h6>
-                    <ul>
-                        {errors.map( error => <li>{error}</li>)}
-                    </ul>
+        <Container className="text-secondary">
+            <Row className="d-flex justify-content-center mx-2 my-4 m-md-4">
+                <Col xs={11} sm={10} md={7} lg={5} className="bg-white rounded border border-danger p-2 p-md-3">
+                    <h6>Sorry, something has gone wrong:</h6>
+                    {errors.map( error => <p key={error} className="m-0">{error}</p>)}
                 </Col>
             </Row>
         </Container>

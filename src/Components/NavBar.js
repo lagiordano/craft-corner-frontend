@@ -31,8 +31,8 @@ function NavBar({currentUser, setCurrentUser}) {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto" activeKey={location.pathname}>
             { currentUser ? null : <Nav.Link href="/" className="text-primary fs-5">Home</Nav.Link> }
-            <Nav.Link href="/projects" className="text-primary fs-5">Projects</Nav.Link>
             { currentUser ? <Nav.Link href="/dashboard" className="text-primary fs-5">Your Collection</Nav.Link> : null }
+            <Nav.Link href="/projects" className="text-primary fs-5">Projects</Nav.Link>
           </Nav>
           <Nav activeKey={location.pathname} className="d-flex align-items-center">
             {currentUser ? 

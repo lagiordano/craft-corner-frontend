@@ -5,13 +5,13 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
+import ErrorMessages from "./ErrorMessages";
 
 function EditProject() {
 
     const navigate = useNavigate();
     const { state } = useLocation();    
     const project = state.project;
-    console.log(project.image);
 
     const [errors, setErrors] = useState(null);
     const [isLoading, setIsLoading] = useState(false)
@@ -80,12 +80,12 @@ function EditProject() {
                 navigate(`/projects/${project.id}`, {state: {from: "edit"}})
             } else {
                 r.json().then(json => {
-                    setErrors(json.erorrs)
-                    console.log(errors)
                     setIsLoading(false)
+                    json.errors ? setErrors(json.errors) : setErrors(["Unable to add edit project at this time"])
                 });
             };
-        });
+        })
+        .catch(() => setErrors(["Unable to edit project at this time"]));
 
     }
 
@@ -149,8 +149,15 @@ function EditProject() {
                             </Row>
                             </>
                         }
+                        { errors ? 
+                        <Row className="p-0 m-0">
+                            <ErrorMessages errors={errors} />
+                        </Row>
+                        :
+                        null }
                         <Row className="p-2">
                             <Col className="d-flex justify-content-center">
+                                <Button variant="secondary" disabled={isLoading} className="p-2 m-3" onClick={() => navigate(-1)}>Cancel</Button>
                                 <Button variant="primary" type="submit" disabled={isLoading} className="p-2 text-white m-3">Update Project</Button>
                             </Col>
                         </Row>

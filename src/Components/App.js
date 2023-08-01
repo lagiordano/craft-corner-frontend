@@ -16,6 +16,9 @@ import ProtectedVisitorRoute from './ProtectedVisitorRoute';
 import EditProject from './EditProject';
 import AccountInformation from './AccountInformation';
 import ProtectedAccountRoute from './ProtectedAccountRoute';
+import PageNotFound from './PageNotFound';
+import FallbackComponent from './FallbackComponent.js';
+import { ErrorBoundary } from 'react-error-boundary';
 
 function App() {
 
@@ -48,34 +51,36 @@ function App() {
 
 
   return (
-    <Router>
-      <NavBar currentUser={currentUser} setCurrentUser={setCurrentUser}/>
-      <Routes>
-        <Route exact path="/projects" element={<Projects currentUser={currentUser} />} />
-        <Route exact path="/projects/:id" element={<Project currentUser={currentUser} />} />
-        {isLoading ? 
-        null 
-        :
-        <>
-        <Route element={<ProtectedVisitorRoute currentUser={currentUser} />}>
-          <Route exact path="/" element={<Home setCurrentUser={setCurrentUser} />} />
-          <Route exact path="/signup" element={<Signup setCurrentUser={setCurrentUser}/>} />
-          <Route exact path="/login" element={<Login setCurrentUser={setCurrentUser} />} />
-        </Route>
-        <Route element={<ProtectedUserRoute currentUser={currentUser} isLoading={isLoading}/> } >
-          <Route exact path="/dashboard" element={<Dashboard currentUser={currentUser}/> } />
-          <Route exact path="/projects/addproject" element={<AddProject />} />
-          <Route exact path="/projects/:id/editproject" element={<EditProject />} />
-        </Route>
-        <Route element={<ProtectedAccountRoute currentUser={currentUser} />} >
-          <Route exact path="/account" element={<AccountInformation currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
-        </Route>
-        </>
-        }
-        <Route path="*" element={<h3>Whoops, looks like there isn't a page at this url</h3>} />
-      </Routes>
-      <Footer /> 
-    </Router>
+    <ErrorBoundary FallbackComponent={FallbackComponent}>
+      <Router>
+        <NavBar currentUser={currentUser} setCurrentUser={setCurrentUser}/>
+        <Routes>
+            <Route exact path="/projects" element={<Projects currentUser={currentUser} />} />
+            <Route exact path="/projects/:id" element={<Project currentUser={currentUser} />} />
+          {isLoading ? 
+          null 
+          :
+          <>
+          <Route element={<ProtectedVisitorRoute currentUser={currentUser} />}>
+            <Route exact path="/" element={<Home setCurrentUser={setCurrentUser} />} />
+            <Route exact path="/signup" element={<Signup setCurrentUser={setCurrentUser}/>} />
+            <Route exact path="/login" element={<Login setCurrentUser={setCurrentUser} />} />
+          </Route>
+          <Route element={<ProtectedUserRoute currentUser={currentUser} isLoading={isLoading}/> } >
+            <Route exact path="/dashboard" element={<Dashboard currentUser={currentUser}/> } />
+            <Route exact path="/projects/addproject" element={<AddProject />} />
+            <Route exact path="/projects/:id/editproject" element={<EditProject />} />
+          </Route>
+          <Route element={<ProtectedAccountRoute currentUser={currentUser} />} >
+            <Route exact path="/account" element={<AccountInformation currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
+          </Route>
+          </>
+          }
+          <Route path="*" element={<PageNotFound currentUser={currentUser} />} />
+        </Routes>
+        <Footer /> 
+      </Router>
+    </ErrorBoundary>
   );
 }
 

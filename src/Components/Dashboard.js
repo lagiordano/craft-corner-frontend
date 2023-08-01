@@ -28,17 +28,25 @@ function Dashboard({currentUser}) {
     const [search, setSearch] = useState(storedSearch || "")
     const [select, setSelect] = useState(storedSelect || "all")
 
+
+    // Access user collection based on - progress status or shared by me
     useEffect( () => {
         fetch(`/collection/${collectionFilter}`)
-        .then(r => r.json())
-        .then(json => {
-            setCollection(json)
-            setErrors(null)
+        .then(r => { 
+            if (r.ok) {
+                r.json().then(json => {
+                    setCollection(json);
+                    setErrors(null);
+                });
+            } else {
+                setErrors(["Unable to load your collection at this time"]);
+            };
         })
-        .catch(() => setErrors(["There has been an issue loading your project information"]))
+        .catch(() => setErrors(["Unable to load your collection at this time"]))
     }, [collectionFilter, reRender])
 
 
+    // manage filter data in local storage
     useEffect( () => {
         localStorage.setItem('collectionFilter', collectionFilter)
     }, [collectionFilter])
@@ -57,7 +65,15 @@ function Dashboard({currentUser}) {
         setReRender(!reRender);
     };
 
+    // reset search filters, display all 
+    function handleResetClick() {
+        setCollectionFilter("all");
+        setSearch("");
+        setSelect("all");
+    }
 
+
+    // filter projects and find which ones to display 
     const filteredProjects = collection.filter( item => {
         if (select === "all") return true;
         return item.project.category === select;
@@ -90,16 +106,16 @@ function Dashboard({currentUser}) {
             {errors ? <ErrorMessages errors={errors} />
             :
             <>
-                {(projectsToDisplay.length) === 0 ? 
-                <>
-                <h5 className="text-secondary p-2">No projects in your collection match your selection, try changing changing your category filter to 'All' or clearing your search.</h5> 
-                <h5 className="text-secondary p-2">Haven't added any projects yet? No worries! Head over to <Link to="/projects">Projects</Link> for inspiration or you can <Link to="/projects/addproject">Add a New Project</Link> yourself.</h5>
-                </>
-                :
-                <Row xs={1} sm={2} md={3} xl={4} className="g-4 mx-2 justify-content-center d-flex">
-                    {projectsToDisplay.map( item => <CollectionCard project={item.project} completedStatus={item.completed_status} key={item.id} setCollectionFilter={setCollectionFilter} setReRender={setReRender} reRender={reRender}/>)}
-                </Row>
-                }
+            <Row className={projectsToDisplay.length === 0 ? "text-secondary d-flex justify-content-center" : "d-none"}>
+                <Col xs={12} md={10} lg={8}>
+                    <h5 className="p-3">We couldn't find any projects in your collection to display.</h5>
+                    <h5 className="p-3">Try adjusting your filters above or click <Button variant="link" className="m-0 p-0" onClick={handleResetClick}><h5 className="p-0 mb-1">here</h5></Button> to view all projects in your collection.</h5>
+                    <h5 className="p-3">Haven't added any projects yet? No worries! Head over to <Link to="/projects">projects</Link> for inspiration or you can <Link to="/projects/addproject">add a new project</Link> yourself.</h5>
+                </Col>
+            </Row>
+            <Row xs={1} sm={2} md={3} xl={4} className="g-4 mx-2 justify-content-center d-flex">
+                {projectsToDisplay.map( item => <CollectionCard project={item.project} completedStatus={item.completed_status} key={item.id} setCollectionFilter={setCollectionFilter} setReRender={setReRender} reRender={reRender} />)}
+            </Row>
             </>
             }
         </Container>

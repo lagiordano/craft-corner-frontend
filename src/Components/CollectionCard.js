@@ -13,9 +13,9 @@ function CollectionCard({completedStatus, project, setCollectionFilter, setReRen
 
    
    
-    const [errors, setErrors] = useState(null)
     const [completedValue, setCompletedValue] = useState(completedStatus)
     const [userProjectId, setUserProjectId] = useState(null);
+    const [hasError, setHasError] = useState(false)
   
     
     const [show, setShow] = useState(false)
@@ -24,16 +24,23 @@ function CollectionCard({completedStatus, project, setCollectionFilter, setReRen
     // confirms if project is currently in collection
     useEffect( () => {
         fetch(`/check_in_collection/${project.id}`)
-        .then(r => r.json())
-        .then(json => {
-            if (json.user_project_id !== null) {
-                setUserProjectId(json.user_project_id)
+        .then(r => {
+            if (r.ok) {
+                r.json().then(json => {
+                    if (json.user_project_id !== null) {
+                        setUserProjectId(json.user_project_id)
+                    } else {
+                        setUserProjectId(null)
+                    };
+                });
             } else {
-                setUserProjectId(null)
-            }
+                setHasError(true)
+            };
         })
-        .catch(() => setErrors(["There has been an error"]))
+        .catch(() => setHasError(true))
     }, [])
+
+    
 
 
     //  updates completed status of user-project
@@ -46,17 +53,16 @@ function CollectionCard({completedStatus, project, setCollectionFilter, setReRen
             },
             body: JSON.stringify({completed_status: newStatus})
         })
-        .then(r => r.json())
-        .then(json => {
-            if (json.errors) {
-                setErrors(json.errors)
-            } else {
-                setErrors(null)
-                setCompletedValue(() => newStatus)
-                setCollectionFilter(newStatus)
-            };
-        })
-        .catch(() => setErrors(["Unable to update collection at this time"]))
+        .then(r => {
+            if (r.ok) {
+                    setHasError(false);
+                    setCompletedValue(() => newStatus)
+                    setCollectionFilter(newStatus)
+                } else {
+                    setHasError(true);
+                }
+            })
+        .catch(() => setHasError(true))
     }
 
     // deletes user-project from collection
@@ -69,12 +75,12 @@ function CollectionCard({completedStatus, project, setCollectionFilter, setReRen
             if (r.ok) {
                 setUserProjectId(null);
                 setReRender(!reRender)
-                setErrors(null)
+                setHasError(false)
             } else {
-                setErrors(["Unable to remove project from your collection at this time"])
+                setHasError(true)
             }
         })
-        .catch(() => setErrors(["Unable to remove project from your collection at this time"]))
+        .catch(() => setHasError(true))
     }
 
     // renders confirm delete modal
@@ -82,7 +88,7 @@ function CollectionCard({completedStatus, project, setCollectionFilter, setReRen
         setShow(true);
     }
 
-    // adds nproject to users collection
+    // adds project to users collection
     function handleAddClick() {
         fetch('/user_projects', {
             method: "POST",
@@ -94,51 +100,56 @@ function CollectionCard({completedStatus, project, setCollectionFilter, setReRen
                 completed_status: "wish list"
             })
         })
-        .then(r => r.json())
-        .then(json => {
-            if (json.errors) {
-                setErrors(json.errors)
+        .then(r => {
+            if (r.ok) {
+                r.json().then(json => {
+                    setHasError(false)
+                    setUserProjectId(json.id)
+                })
             } else {
-                setErrors(null)
-                setUserProjectId(json.id)
+                setHasError(true)
             };
         })
-        .catch( () => setErrors(["Could not add project to your collection"]))
+        .catch( () => setHasError(true))
     }
     
     
 
     return (
         <Col>
-            {errors ? 
-            <ErrorMessages errors={errors} />
-            :
             <Card>
+                {hasError ?
+                <Card.Body className="d-flex align-items-center">
+                    <Card.Text className="p-3 text-danger">Sorry, an error has occurred</Card.Text>
+                </Card.Body>
+                :
+                <>
                 <Link to={`/projects/${project.id}`} state={{from: "Collection"}} className="text-decoration-none">
                     <Card.Img variant="top" src={project.image || projectPlaceholder} alt={project.title} />
                     <Card.Body>
                         <Card.Text className="text-secondary text-capitalize text-strong">{project.title}</Card.Text>
                     </Card.Body>
                 </Link>
-                {userProjectId ?
-                <>
-                    <div className="justify-content-center d-flex mt-auto">
-                        <Form.Select size="sm" onChange={handleChange} className="w-50 text-secondary" defaultValue={completedValue}>
-                            <option value="wish list">Wish List</option>
-                            <option value="in progress">In Progress</option>
-                            <option value="completed">Completed</option>
-                        </Form.Select>
+                    {userProjectId ?
+                    <>
+                        <div className="justify-content-center d-flex mt-auto">
+                            <Form.Select size="sm" onChange={handleChange} className="w-50 text-secondary" defaultValue={completedValue}>
+                                <option value="wish list">Wish List</option>
+                                <option value="in progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                            </Form.Select>
+                        </div>
+                        <Button onClick={handleConfirmDelete} className="btn-link text-danger mt-auto mb-1">Remove</Button>
+                        <DeleteConfirmation showModal={show} handleClose={handleClose} handleDelete={handleDelete} />
+                    </>
+                    :
+                    <div className="justify-content-center d-flex mt-auto mb-4">
+                        <Button variant="primary" className="text-white" onClick={handleAddClick}>Add to Collection</Button>
                     </div>
-                    <Button onClick={handleConfirmDelete} className="btn-link text-danger mt-auto mb-1">Remove</Button>
-                    <DeleteConfirmation showModal={show} handleClose={handleClose} handleDelete={handleDelete} />
+                    }
                 </>
-                :
-                <div className="justify-content-center d-flex mt-auto mb-4">
-                    <Button variant="primary" className="text-white" onClick={handleAddClick}>Add to Collection</Button>
-                </div>
                 }
             </Card>
-            }
         </Col>
     );
 

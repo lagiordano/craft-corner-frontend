@@ -17,6 +17,7 @@ function Project({currentUser}) {
     const [project, setProject] = useState({})
     const [inCollection, setInCollection] = useState(false)
     const [errors, setErrors] = useState(null)
+    const [isLoading, setIsLoading] = useState(true);
 
     const [show, setShow] = useState(false)
     const handleClose = () => setShow(false)
@@ -32,26 +33,31 @@ function Project({currentUser}) {
     // check if project is in user's collection
     useEffect( () => {
         fetch(`/check_in_collection/${params.id}`)
-        .then(r => r.json())
-        .then(json => {
-            if (json.user_project_id) {
-                setInCollection(true)
+        .then(r => {
+            if (r.ok) {
+                r.json().then(json => {
+                    json.user_project_id ? setInCollection(true) : setInCollection(false);
+                });
             } else {
-                setInCollection(false)
-            };
+                setErrors(["Unable to load project information at this time"])
+            }
         })
-        .catch(() => setErrors(["There has been an error"]))
+        .catch(() => setErrors(["Unable to load project information at this time"]))
     }, [])
     
     // load individual project
     useEffect( () => {
+        setIsLoading(true);
         fetch(`/projects/${params.id}`)
-        .then(r => r.json())
-        .then(json => {
-            setProject(json)
-            setErrors(null)
+        .then(r => {
+            if (r.ok) {
+                r.json().then(json => setProject(json));
+            } else {
+                setErrors(["Could not load project Information"]);
+            }
+            setIsLoading(false);
         })
-        .catch(() => setErrors(["There has been an issue loading this project's information"]))
+        .catch(() => setErrors(["Unable to load project information at this time"]))
     }, [inCollection]);
 
     
@@ -77,26 +83,29 @@ function Project({currentUser}) {
                 completed_status: "wish list"
             })
         })
-        .then(r => r.json())
-        .then(json => {
-            if (json.errors) {
-                setErrors(json.errors)
+        .then(r => {
+            if (r.ok) {
+                setInCollection(true);
+                setErrors(null);
             } else {
-                setErrors(null)
-                setInCollection(true)
-            }
+                r.json().then(json => {
+                    console.log(json)
+                    json.errors ? setErrors(json.errors) : setErrors(["Could not add project to your collection at this time"])
+                });
+            };  
         })
-        .catch( () => setErrors(["Could not add project to your collection"]))
-    }
+        .catch(["Could not add project to your collection at this time"])
+    };
 
-    
 
     return (
        
-    <Container className="mb-5">
-        <Row className="my-3  mt-md-4">
-            <Col sm={2} md={4} lg={5} className="d-flex justifycontent-start">
+    <Container className={isLoading ? "d-none" : "mb-5"}>
+        <Row className="my-3 mt-md-4">
+            <Col sm={2} md={4} lg={5} className="d-flex justify-content-start">
                 {
+                    errors ? <Button variant="secondary" onClick={() => navigate("/")}>Return Home</Button>
+                    :
                     (location.state && location.state.from === "edit") ? 
                     <Button variant="secondary" onClick={() => navigate(-3)}>Go Back</Button>
                     :
@@ -154,7 +163,6 @@ function Project({currentUser}) {
         </div>
         }
     </Container>
-
     )
 }
 

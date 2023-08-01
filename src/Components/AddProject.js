@@ -56,8 +56,8 @@ function AddProject() {
         });
     };
 
+
     function handleSubmit(e){
-    
         e.preventDefault();
         setIsLoading(true);
 
@@ -80,28 +80,18 @@ function AddProject() {
         })
         .then(r => {
             if (r.ok) {
-                r.json()
-                .then(json => {
-                    setNewProject({
-                        url: null,
-                        category: "", 
-                        completedStatus: "",
-                        description: "",
-                        title: "", 
-                        image: ""
-                    });
+                r.json().then(json => {
                     setErrors(null)
                     navigate(`/projects/${json.id}`)
                 })
             } else {
-                r.json()
-                .then(json => {
+                r.json().then(json => {
                     setIsLoading(false);
-                    setErrors(json.errors)
-                    console.log(errors)
+                    json.errors ? setErrors(json.errors) : setErrors(["Unable to add new project at this time"])
                 })
             };
-        });
+        })
+        .catch(() => setErrors(["Unable to add new project at this time"]))
     }
 
    
@@ -189,8 +179,15 @@ function AddProject() {
                                 <Form.Text className="ps-1 text-light">Have you already started this project? Select a status above to help sort your collection</Form.Text>
                             </Col>
                         </Row>
+                        {errors ? 
+                        <Row className="p-0 m-0">
+                            <ErrorMessages errors={errors} />
+                        </Row>
+                        :
+                        null }
                         <Row className="p-2">
                             <Col className="d-flex justify-content-center">
+                                <Button variant="secondary" disabled={isLoading} className="p-2 m-3" onClick={() => navigate(-1)}>Cancel</Button>
                                 <Button variant="primary" type="submit" disabled={isLoading} className="p-2 text-white m-3">Add Project</Button>
                             </Col>
                         </Row>

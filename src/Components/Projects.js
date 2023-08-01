@@ -23,16 +23,20 @@ function Projects() {
     const [select, setSelect] = useState(storedSelect || "all")
     const [errors, setErrors] = useState(null)
 
-  
 
     useEffect( () => {
         fetch("/projects")
-        .then(r => r.json())
-        .then(json => {
-            setProjects(json);
-            setErrors(null)
+        .then(r => {
+            if (r.ok) {
+                r.json().then(json => {
+                    setErrors(null);
+                    setProjects(json)
+                })
+            } else {
+                r.json().then(json => console.log(json))
+                setErrors(["Unable to load project information at this time"]);
+            };
         })
-        .catch(() => setErrors(["There has been an issue loading our project information"]))
     }, []);
 
 
@@ -46,7 +50,6 @@ function Projects() {
     }, [search])
 
     
-
 
     const filteredProjects = projects.filter( project => {
         if (select === "all") return true;
@@ -68,10 +71,10 @@ function Projects() {
                 <ProjectFilter search={search} setSearch={setSearch} select={select} setSelect={setSelect}/>
             </Row>
         </Container>
-        <Container className="mb-5 mt-2">
-            {errors ? <ErrorMessages errors={errors} />
-            :
-            <>
+        {errors ?
+        <ErrorMessages errors={errors} />
+        :
+        <Container className="mb-5">
                 {(projectsToDisplay.length === 0) ? 
                 <div className="text-secondary fs-5">Looks like there are no project matching your search. Try changing categories or trying a different search term.</div>
                 :
@@ -79,10 +82,8 @@ function Projects() {
                     {projectsToDisplay.map( project => <ProjectCard image={project.image} title={project.title} id={project.id} key={project.id}/>)}
                 </Row>
                 }
-            </>
-            }
-            
         </Container>
+        }
         </>
     );
 };
