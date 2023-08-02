@@ -6,16 +6,18 @@ import Col from "react-bootstrap/Col";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Button from "react-bootstrap/Button";
 
-function ProjectFilter({search, setSearch, select, setSelect }) {
+function ProjectFilter({search, setSearch, select, setSelect, setCurrentPage }) {
 
     const navigate= useNavigate();
 
     function handleCategoryChange(e){
         setSelect(e.target.value)
+        setCurrentPage(1);
     }
 
     function handleSearchChange(e){
         setSearch(e.target.value);
+        setCurrentPage(1);
     }
 
     return (

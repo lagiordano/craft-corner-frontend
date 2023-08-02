@@ -19,7 +19,7 @@ function NavBar({currentUser, setCurrentUser}) {
         setCurrentUser(null)
         navigate("/")
       } else {
-        console.log("Could not log out")
+        alert("Could not log out at this time")
       };
     })
   }

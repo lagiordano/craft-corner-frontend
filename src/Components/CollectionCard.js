@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import projectPlaceholder from "../images/projectPlaceholder.jpg";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import ErrorMessages from "./ErrorMessages";
 import DeleteConfirmation from "./DeleteConfirmation";
 
 

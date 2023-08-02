@@ -86,16 +86,26 @@ function Dashboard({currentUser}) {
     return (
         <>
         <Row className="py-4 my-2 bg-warning text-secondary">
-            <Col sm={12} md={4} className="d-flex justify-content-center">
-                <h2 className="mb-4 mb-md-0 ms-2 ms-lg-4">{currentUser.username}'s Collection</h2>
+            <Col sm={12} lg={6} className="d-flex justify-content-center">
+                <h2 className="pb-2 pb-md-3 pb-lg-0">{currentUser.username}'s Collection</h2>
             </Col>
-            <Col sm={12} md={8} className="d-flex justify-content-evenly">
-                <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="in progress" active={collectionFilter === "in progress" ? true : false}>In Progress</Button>
-                <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="wish list" active={collectionFilter === "wish list" ? true : false}>Wish List</Button>
-                <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="completed" active={collectionFilter === "completed" ? true : false}>Completed</Button>
-                <Button variant="outline-secondary" size="sm" className="px-3" onClick={handleCollectionFilterClick} value="all" active={collectionFilter === "all" ? true : false}>All</Button>
-                <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="shared by user" active={collectionFilter === "shared by user" ? true : false}>Shared By You</Button>
+            <Col sm={12} lg={6} className="d-flex align-items-center justify-content-center">
+                <Row className="w-100">
+                    <Col className="d-flex justify-content-evenly">
+                        <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="in progress" active={collectionFilter === "in progress" ? true : false}>In Progress</Button>
+                    
+                        <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="wish list" active={collectionFilter === "wish list" ? true : false}>Wish List</Button>
+                    
+                        <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="completed" active={collectionFilter === "completed" ? true : false}>Completed</Button>
+                    
+                        <Button variant="outline-secondary" size="sm" className="px-3" onClick={handleCollectionFilterClick} value="all" active={collectionFilter === "all" ? true : false}>All</Button>
+                    
+                        <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="shared by user" active={collectionFilter === "shared by user" ? true : false}>Shared By You</Button>
+                    </Col>
+                </Row>
             </Col>
+                
+                
         </Row>
         <Container>
             <Row className="justify-content-center d-flex">
@@ -108,9 +118,9 @@ function Dashboard({currentUser}) {
             <>
             <Row className={projectsToDisplay.length === 0 ? "text-secondary d-flex justify-content-center" : "d-none"}>
                 <Col xs={12} md={10} lg={8}>
-                    <h5 className="p-3">We couldn't find any projects in your collection to display.</h5>
-                    <h5 className="p-3">Try adjusting your filters above or click <Button variant="link" className="m-0 p-0" onClick={handleResetClick}><h5 className="p-0 mb-1">here</h5></Button> to view all projects in your collection.</h5>
-                    <h5 className="p-3">Haven't added any projects yet? No worries! Head over to <Link to="/projects">projects</Link> for inspiration or you can <Link to="/projects/addproject">add a new project</Link> yourself.</h5>
+                    <h5 className="p-3">We couldn't find any projects in your collection</h5>
+                    <h5 className="p-3">Try adjusting your filters above or click <Button variant="link" className="m-0 p-0" onClick={handleResetClick}><h5 className="p-0 mb-1">here</h5></Button> to view all projects in your collection</h5>
+                    <h5 className="p-3">Haven't added any projects yet? No worries! Head over to <Link to="/projects">projects</Link> for inspiration or you can <Link to="/projects/addproject">add a new project</Link> yourself</h5>
                 </Col>
             </Row>
             <Row xs={1} sm={2} md={3} xl={4} className="g-4 mx-2 justify-content-center d-flex">

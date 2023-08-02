@@ -9,6 +9,7 @@ import projectPlaceholder from "../images/projectPlaceholder.jpg";
 function ProjectCard({image, title, id}) {
 
     const location = useLocation();
+    
     let fromValue;
     if (location.pathname === "/") {
         fromValue = "Home" 

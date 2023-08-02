@@ -89,7 +89,6 @@ function Project({currentUser}) {
                 setErrors(null);
             } else {
                 r.json().then(json => {
-                    console.log(json)
                     json.errors ? setErrors(json.errors) : setErrors(["Could not add project to your collection at this time"])
                 });
             };  

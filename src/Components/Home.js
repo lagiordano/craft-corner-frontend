@@ -10,7 +10,7 @@ import UnauthorizedModal from "./UnauthorizedModal";
 function Home() {
 
     const [projectSample, setProjectSample] = useState([]);
-    const [errors, setErrors] = useState([])
+    const [hasError, setHasError] = useState(false);
     const { state } = useLocation();
 
    const [show, setShow] = useState(false);
@@ -35,14 +35,13 @@ function Home() {
         fetch("/popular_sample")
         .then(r => {
             if (r.ok) {
-                r.json()
-                .then(json => setProjectSample(json))
+                r.json().then(json => setProjectSample(json))
+                setHasError(false);
             } else {
-                r.json()
-                .then(json => setErrors(json.errors))
-                .then(console.log(errors))
+                setHasError(true);
             };
-        });
+        })
+        .catch(() => setHasError(true));
     }, []);
 
     return (
@@ -91,13 +90,13 @@ function Home() {
                 </Col>
             </Row>
         </Container>
-        <div id="home_projects" className="bg-white mt-5 mb-3 pt-3 pb-4">
-        <Container>
-            <h3 className="text-secondary p-2">Start by exploring some of our popular projects...</h3>
-            <Row xs={1} md={2} lg={4} className="g-4 p-2 pb-5">
-                {projectSample.map(project => <ProjectCard key={project.id} image={project.image} title={project.title} id={project.id} />)}
-            </Row>
-        </Container>
+        <div id="home_projects" className={hasError ? "d-none" : "bg-white mt-5 mb-3 pt-3 pb-4"}>
+            <Container>
+                <h3 className="text-secondary p-2">Start by exploring some of our popular projects...</h3>
+                <Row xs={1} md={2} lg={4} className="g-4 p-2 pb-5">
+                    {projectSample.map(project => <ProjectCard key={project.id} image={project.image} title={project.title} id={project.id} />)}
+                </Row>
+            </Container>
         </div>
         </>
             

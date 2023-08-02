@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import { useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -16,7 +15,6 @@ function AccountInformation ({currentUser, setCurrentUser}) {
     const [buttonDisabled, setButtonDisabled] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState(null);
-    const navigate = useNavigate();
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
