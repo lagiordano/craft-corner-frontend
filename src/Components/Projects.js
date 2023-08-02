@@ -77,14 +77,16 @@ function Projects() {
 
     return (
         <>
-        <Row className="py-4 my-2 bg-warning text-secondary">
-            <Col>
-                <h3>Projects Shared by Our Community</h3>
-            </Col>
-        </Row>
         <Container>
+            <Row className="p-4 my-2 bg-warning text-secondary full-width-row">
+                <Col>
+                    <h3>Projects Shared by Our Community</h3>
+                </Col>
+            </Row>
             <Row className="justify-content-center d-flex">
-                <ProjectFilter search={search} setSearch={setSearch} select={select} setSelect={setSelect} setCurrentPage={setCurrentPage}/>
+                <Col>
+                    <ProjectFilter search={search} setSearch={setSearch} select={select} setSelect={setSelect} setCurrentPage={setCurrentPage}/>
+                </Col>
             </Row>
         </Container>
         
@@ -102,8 +104,10 @@ function Projects() {
                 <Row xs={1} sm={2} md={3} lg={4} className="g-4 mx-2 justify-content-center d-flex">
                     {currentProjects.map( project => <ProjectCard image={project.image} title={project.title} id={project.id} key={project.id}/>)}
                 </Row>
-                <Row className="d-flex justify-content-center">
-                    <PaginationComponent nPages={nPages} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+                <Row className="pt-4 pb-2">
+                    <Col className="d-flex justify-content-center">
+                        <PaginationComponent nPages={nPages} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+                    </Col>
                 </Row>
                 </>
                 }

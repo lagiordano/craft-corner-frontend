@@ -21,7 +21,7 @@ footer {
 
 @media (max-width: 576px){
   .card-img-top{
-    height: 40vh;
+    height: 30vh;
     width: 100%;
     object-fit: cover;
   }
@@ -34,7 +34,7 @@ footer {
 
 @media (min-width: 576px){
   .card-img-top{
-    height: 30vh;
+    height: 20vh;
     width: 100%;
     object-fit: cover;
   }
@@ -108,4 +108,12 @@ li.valid{
 li.invalid{
   color: rgb(203,68,74);
   font-size:smaller;
+}
+
+
+.full-width-row{
+  margin-left: calc((100vw - 100%) / -2) !important;
+  padding-left: calc((100vw - 100%) / 2);
+  margin-right: calc((100vw - 100%) / -2) !important;
+  padding-right: calc((100vw - 100%) / 2);
 }
