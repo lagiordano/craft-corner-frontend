@@ -93,7 +93,7 @@ function Signup({setCurrentUser}) {
 
     return (
         <Container id="signup" >
-                <div className="bg-white my-3 my-md-4 m-lg-5 p-2 p-md-3 px-lg-4 text-secondary border-primary border rounded text-start">
+                <div className="bg-white my-3 my-md-4 m-lg-5 p-2 p-md-3 px-lg-4 text-secondary border-muted border rounded text-start">
                     <h1 className="text-center p-2">Create an Account</h1>
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="p-2">
@@ -120,7 +120,7 @@ function Signup({setCurrentUser}) {
                             minLength={8}
                             value={signupDetails.password}
                             valueAgain={signupDetails.passwordConfirmation}
-                            className="ps-1 pb-1"
+                            className="ps-2 pb-1"
                             messages={{
                                 minLength: "Must be at least 8 characters",
                                 capital: "Must contain at least one uppercase letter",

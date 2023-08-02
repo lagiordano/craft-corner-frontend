@@ -96,9 +96,9 @@ function AddProject() {
 
    
     return (
-        <Container className="mb-5">
-            <Row className="d-flex justify-content-center">
-                <Col xs={12} md={10} lg={9} className="bg-white p-2 p-md-3 p-lg-4 m-3 m-md-5 rounded text-secondary">
+        <Container>
+            <Row className="d-flex justify-content-center mx-1">
+                <Col xs={12} md={10} lg={9} className="bg-white p-2 p-md-3 p-lg-4 my-3 m-md-5 rounded border border-muted text-secondary">
                     <h3 className="p-2">Add a New Project</h3>
                     <h6 className="p-2">This will be added to your collection and be made available in our shared projects page.</h6>
                     <h6 className="p-2">Before we start, is the project you are adding from another website? (e.g. blog, social media) </h6>

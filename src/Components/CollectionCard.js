@@ -8,7 +8,7 @@ import Form from "react-bootstrap/Form";
 import DeleteConfirmation from "./DeleteConfirmation";
 
 
-function CollectionCard({completedStatus, project, setCollectionFilter, setReRender, reRender}) {
+function CollectionCard({completedStatus, project, setCollectionFilter, setReRender, reRender, setCurrentPage}) {
 
    
    
@@ -57,6 +57,7 @@ function CollectionCard({completedStatus, project, setCollectionFilter, setReRen
                     setHasError(false);
                     setCompletedValue(() => newStatus)
                     setCollectionFilter(newStatus)
+                    setCurrentPage(1);
                 } else {
                     setHasError(true);
                 }
@@ -132,7 +133,7 @@ function CollectionCard({completedStatus, project, setCollectionFilter, setReRen
                     {userProjectId ?
                     <>
                         <div className="justify-content-center d-flex mt-auto">
-                            <Form.Select size="sm" onChange={handleChange} className="w-50 text-secondary" defaultValue={completedValue}>
+                            <Form.Select size="sm" onChange={handleChange} className="w-75 text-secondary" defaultValue={completedValue}>
                                 <option value="wish list">Wish List</option>
                                 <option value="in progress">In Progress</option>
                                 <option value="completed">Completed</option>

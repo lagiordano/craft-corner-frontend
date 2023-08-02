@@ -32,17 +32,19 @@ function Project({currentUser}) {
 
     // check if project is in user's collection
     useEffect( () => {
-        fetch(`/check_in_collection/${params.id}`)
-        .then(r => {
-            if (r.ok) {
-                r.json().then(json => {
-                    json.user_project_id ? setInCollection(true) : setInCollection(false);
-                });
-            } else {
-                setErrors(["Unable to load project information at this time"])
-            }
-        })
-        .catch(() => setErrors(["Unable to load project information at this time"]))
+        if (currentUser) {
+            fetch(`/check_in_collection/${params.id}`)
+            .then(r => {
+                if (r.ok) {
+                    r.json().then(json => {
+                        json.user_project_id ? setInCollection(true) : setInCollection(false);
+                    });
+                } else {
+                    setErrors(["Unable to load project information at this time"])
+                }
+            })
+            .catch(() => setErrors(["Unable to load project information at this time"]))
+        }
     }, [])
     
     // load individual project
@@ -99,7 +101,7 @@ function Project({currentUser}) {
 
     return (
        
-    <Container className={isLoading ? "d-none" : "mb-5"}>
+    <Container className={isLoading ? "d-none" : "my-2"}>
         <Row className="my-3 mt-md-4">
             <Col sm={2} md={4} lg={5} className="d-flex justify-content-start">
                 {
@@ -117,10 +119,13 @@ function Project({currentUser}) {
             <ErrorMessages errors={errors} />
         </Row>
         :
-        <div className="d-flex justify-content-center mb-5">
-            <Row id="project-container" className="border rounded pt-3 my-md-4 mx-lg-5 text-secondary bg-white border-primary">
+        <Container className="d-flex justify-content-center mb-2">
+            <Row id="project-container" className="border rounded pt-3 my-md-4 mx-lg-5 text-secondary bg-white border-muted">
+                <Col sm={12} md={6} className="d-flex justify-content-center">
+                    <img src={project.image || projectPlaceholder} alt={project.title} className="project m-1 mt-lg-4 border-primary rounded"/>
+                </Col>
                 <Col sm={12} md={6}>
-                    <div className="m-2 m-md-1 my-lg-3 ms-lg-3 me-lg-0 text-start text-wrap">
+                    <div className="m-2 m-md-1 my-lg-3 me-lg-3 ms-lg-0 text-start text-wrap">
                         <h1 className="text-capitalize py-1">{project.title}</h1>
                         <h5 className="pb-2">Category: <span className="fs-6 text-capitalize">{project.category}</span></h5>
                         {
@@ -147,19 +152,16 @@ function Project({currentUser}) {
                         <UnauthorizedModal showModal={show} handleClose={handleClose} />
                     </div>
                 </Col>
-                <Col sm={12} md={6} className="d-flex justify-content-center">
-                    <img src={project.image || projectPlaceholder} alt={project.title} className="project m-2 ms-lg-3 mt-lg-4 border-primary rounded"/>
-                </Col>
                 {project.description ? 
                 <Row>
                     <Col sm={12}>
-                        <h5 className="m-2 m-md-1 ms-lg-3 pb-2 text-start">Description: <span className="fs-6">{project.description}</span></h5>
+                        <h5 className="m-2 ms-lg-3 pb-2 text-start">Description: <span className="fs-6">{project.description}</span></h5>
                     </Col>
                 </Row>
                 :
                 null}
             </Row>
-        </div>
+        </Container>
         }
     </Container>
     )

@@ -69,7 +69,7 @@ function Login({setCurrentUser}) {
 
     return (
         <Container id="login" className="mt-4 mt-md-5">
-            <div className="bg-white text-secondary border-primary border rounded text-start my-3 my-md-4 m-lg-5 p-2 p-md-3 px-lg-4">
+            <div className="bg-white text-secondary border-muted border rounded text-start my-3 my-md-4 m-lg-5 p-2 p-md-3 px-lg-4">
                 <h1 className="text-center p-2">Login to Account</h1>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className="p-2">

@@ -7,8 +7,8 @@ import Col from "react-bootstrap/Col";
 function Footer() {
 
     return (
-        <footer className="mt-auto bg-primary p-1">
-            <Row className="d-flex justify-content-center">
+        <footer className="bg-primary p-1">
+            <Row className="d-flex justify-content-center mb-0">
                 <Col>
                     <Link className="text-decoration-none pl-3 align-items-center text-white" to={"privacypolicy+T&C's"}>Privacy Policy and Terms of Use</Link>
                 </Col>

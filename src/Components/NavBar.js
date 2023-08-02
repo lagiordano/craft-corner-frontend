@@ -26,8 +26,8 @@ function NavBar({currentUser, setCurrentUser}) {
   }
 
   return (
-    <Container>
-      <Navbar collapseOnSelect expand="lg" className=" bg-white">
+    
+      <Navbar collapseOnSelect expand="lg" className="px-3 px-md-5  bg-white">
           <Navbar.Brand href="/" className="fs-2 strong text-primary">Craft Corner</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
@@ -51,7 +51,7 @@ function NavBar({currentUser, setCurrentUser}) {
             </Nav>
           </Navbar.Collapse>
       </Navbar>
-    </Container>
+    
   );
 }
 

@@ -8,6 +8,7 @@ import Button from "react-bootstrap/Button";
 import CollectionCard from "./CollectionCard";
 import { Link } from "react-router-dom";
 import PaginationComponent from "./PaginationComponent";
+import CollectionHeader from "./CollectionHeader";
 
 function Dashboard({currentUser}) {
 
@@ -28,6 +29,8 @@ function Dashboard({currentUser}) {
     const [errors, setErrors] = useState(null);
     const [search, setSearch] = useState(storedSearch || "")
     const [select, setSelect] = useState(storedSelect || "all")
+
+    
 
 
     // Access user collection based on - progress status or shared by me
@@ -78,12 +81,7 @@ function Dashboard({currentUser}) {
         localStorage.setItem('collectionSearch', search)
     }, [search])
 
-  
-    function handleCollectionFilterClick(e) {
-        setCollectionFilter(e.target.value);
-        setCurrentPage(1);
-        setReRender(!reRender);
-    };
+
 
     // reset search filters, display all 
     function handleResetClick() {
@@ -99,36 +97,13 @@ function Dashboard({currentUser}) {
 
     return (
         <>
-        <Container>
-            <Row className="py-4 my-2 bg-warning text-secondary full-width-row">
-                <Col sm={12} lg={6} className="d-flex justify-content-center">
-                    <h2 className="pb-2 pb-md-3 pb-lg-0">{currentUser.username}'s Collection</h2>
-                </Col>
-                <Col sm={12} lg={6} className="d-flex align-items-center justify-content-center">
-                    <Row className="w-100">
-                        <Col className="d-flex justify-content-evenly">
-                            <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="in progress" active={collectionFilter === "in progress" ? true : false}>In Progress</Button>
-                        
-                            <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="wish list" active={collectionFilter === "wish list" ? true : false}>Wish List</Button>
-                        
-                            <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="completed" active={collectionFilter === "completed" ? true : false}>Completed</Button>
-                        
-                            <Button variant="outline-secondary" size="sm" className="px-3" onClick={handleCollectionFilterClick} value="all" active={collectionFilter === "all" ? true : false}>All</Button>
-                        
-                            <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="shared by user" active={collectionFilter === "shared by user" ? true : false}>Shared By You</Button>
-                        </Col>
-                    </Row>
-                </Col>
-                    
-                    
-            </Row>
-        </Container>
+        <CollectionHeader currentUser={currentUser} setCollectionFilter={setCollectionFilter} collectionFilter={collectionFilter} setCurrentPage={setCurrentPage} setReRender={setReRender} reRender={reRender}/>
         <Container>
             <Row className="justify-content-center d-flex">
                 <ProjectFilter search={search} setSearch={setSearch} select={select} setSelect={setSelect} setCurrentPage={setCurrentPage}/>
             </Row>
         </Container>
-        <Container className="mb-5 mt-2">
+        <Container className="my-2">
             {errors ? <ErrorMessages errors={errors} />
             :
             <>
@@ -143,9 +118,9 @@ function Dashboard({currentUser}) {
                 :
                 <>
                 <Row xs={1} sm={2} md={3} xl={4} className="g-4 mx-2 justify-content-center d-flex">
-                    {currentProjects.map( item => <CollectionCard project={item.project} completedStatus={item.completed_status} key={item.id} setCollectionFilter={setCollectionFilter} setReRender={setReRender} reRender={reRender} />)}
+                    {currentProjects.map( item => <CollectionCard project={item.project} completedStatus={item.completed_status} key={item.id} setCollectionFilter={setCollectionFilter} setReRender={setReRender} reRender={reRender} setCurrentPage={setCurrentPage}/>)}
                 </Row>
-                <Row className="pt-4 pb-2">
+                <Row className="pt-4">
                     <Col className="d-flex justify-content-center">
                         <PaginationComponent nPages={nPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
                     </Col>

@@ -23,7 +23,7 @@ function ProjectCard({image, title, id}) {
                 <Card >
                     <Card.Img variant="top" src={image || projectPlaceholder} alt={title} />
                     <Card.Body className="d-flex align-items-center justify-content-center">
-                        <Card.Title className="text-secondary">{title}</Card.Title>
+                        <Card.Text className="text-secondary text-strong">{title}</Card.Text>
                     </Card.Body>
                 </Card>
             </Link>

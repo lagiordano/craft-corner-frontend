@@ -93,7 +93,7 @@ function Projects() {
         {errors ?
         <ErrorMessages errors={errors} />
         :
-        <Container className="mb-5">
+        <Container>
                 {(projectsToDisplay.length === 0) ? 
                 <Row className="text-secondary">
                     <h5 className="p-3">Looks like there are no project matching your search</h5>

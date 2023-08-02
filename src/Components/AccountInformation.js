@@ -90,10 +90,10 @@ function AccountInformation ({currentUser, setCurrentUser}) {
 
 
     return (
-        <Container className="text-secondary mt-5">
-            <Row className="d-flex justify-content-center mt-5">
-                <Col sm={12} md={8} lg={7} className="bg-white rounded border border-primary p-4">
-                    <h1 className="p-3 text-decoration-underline">Account Details</h1>
+        <Container className="text-secondary my-4 my-md-5 d-flex justify-content-center">
+            
+                <Col sm={12} md={8} lg={7} className="bg-white rounded border border-muted p-md-3 p-lg-4">
+                    <h1 className="pt-3 pb-lg-2 text-decoration-underline">Account Details</h1>
                     <Form onSubmit={handleSubmit} className={formDisabled ? "text-start p-3" : "text-start p-3 my-3 border border-muted rounded"}>
                         <Row className="p-2">
                             <Col sm={12} lg={3}>
@@ -137,7 +137,7 @@ function AccountInformation ({currentUser, setCurrentUser}) {
                         
                     </Row>
                 </Col>
-            </Row>
+           
             
         </Container>
     )

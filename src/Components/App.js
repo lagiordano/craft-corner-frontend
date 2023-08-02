@@ -53,6 +53,7 @@ function App() {
   return (
     <ErrorBoundary FallbackComponent={FallbackComponent}>
       <Router>
+        <div id="wrapper">
         <NavBar currentUser={currentUser} setCurrentUser={setCurrentUser}/>
         <Routes>
             <Route exact path="/projects" element={<Projects currentUser={currentUser} />} />
@@ -79,6 +80,7 @@ function App() {
           <Route path="*" element={<PageNotFound currentUser={currentUser} />} />
         </Routes>
         <Footer /> 
+        </div>
       </Router>
     </ErrorBoundary>
   );
