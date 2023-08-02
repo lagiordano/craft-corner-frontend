@@ -1,44 +1,21 @@
 import React from "react";
-import Pagination from "react-bootstrap/Pagination";
+import ResponsivePagination from "react-responsive-pagination";
+import { dropEllipsis } from "react-responsive-pagination/narrowBehaviour";
+
 
 function PaginationComponent({nPages, currentPage, setCurrentPage}) {
 
-   
-
-
-    let active = currentPage;
-    let items = [];
-    for (let number = 1; number <= nPages; number++) {
-        items.push(
-            <Pagination.Item key={number} active={number === active} onClick={() => setCurrentPage(number)}>
-                {number}
-            </Pagination.Item>,
-        );
-    }
-
-    function nextPage () {
-        if (currentPage !== nPages) {
-            setCurrentPage(currentPage + 1)
-        }
-    }
-
-    function prevPage () {
-        if (currentPage !== 1) {
-            setCurrentPage(currentPage - 1)
-        }
-    }
-
-    return (
-        
-        <Pagination>
-            <Pagination.Prev onClick={prevPage}/>
-            {items}
-            <Pagination.Next onClick={nextPage}/>
-        </Pagination>
-    )
-
+   return (
+    <ResponsivePagination
+        current={currentPage}
+        total={nPages}
+        onPageChange={setCurrentPage}
+        narrowBehaviour={dropEllipsis}
+    />
+   );
 
 }
 
-
 export default PaginationComponent;
+
+

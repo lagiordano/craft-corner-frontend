@@ -55,7 +55,8 @@ function Projects() {
      const indexOfLastProject = currentPage * projectsPerPage;
      const indexOfFirstProject = indexOfLastProject - projectsPerPage;
      const currentProjects = projectsToDisplay.slice(indexOfFirstProject, indexOfLastProject);
-     const nPages = Math.ceil(projectsToDisplay.length / projectsPerPage)
+     const numberOfProjects = projectsToDisplay.length
+     const nPages = Math.ceil(numberOfProjects / projectsPerPage)
 
 
     useEffect( () => {
@@ -106,7 +107,7 @@ function Projects() {
                 </Row>
                 <Row className="pt-4 pb-2">
                     <Col className="d-flex justify-content-center">
-                        <PaginationComponent nPages={nPages} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+                        <PaginationComponent nPages={nPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
                     </Col>
                 </Row>
                 </>
