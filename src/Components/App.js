@@ -19,6 +19,7 @@ import ProtectedAccountRoute from './ProtectedAccountRoute';
 import PageNotFound from './PageNotFound';
 import FallbackComponent from './FallbackComponent.js';
 import { ErrorBoundary } from 'react-error-boundary';
+import TermsAndConditions from './TermsAndConditions';
 
 function App() {
 
@@ -58,6 +59,7 @@ function App() {
         <Routes>
             <Route exact path="/projects" element={<Projects currentUser={currentUser} />} />
             <Route exact path="/projects/:id" element={<Project currentUser={currentUser} />} />
+            <Route exact path="/privacypolicyt&cs" element={<TermsAndConditions /> } />
           {isLoading ? 
           null 
           :

@@ -6,7 +6,7 @@ import projectPlaceholder from "../images/projectPlaceholder.jpg";
 
 
 
-function ProjectCard({image, title, id}) {
+function ProjectCard({image, title, id, currentPage}) {
 
     const location = useLocation();
     
@@ -19,7 +19,7 @@ function ProjectCard({image, title, id}) {
     
     return (
         <Col>
-            <Link to={`/projects/${id}`} state={{from: fromValue}} className="text-decoration-none">
+            <Link to={`/projects/${id}`} state={{from: fromValue, currentPage: currentPage, pathname: location.pathname}} className="text-decoration-none">
                 <Card >
                     <Card.Img variant="top" src={image || projectPlaceholder} alt={title} />
                     <Card.Body className="d-flex align-items-center justify-content-center">

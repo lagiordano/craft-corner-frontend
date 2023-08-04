@@ -138,7 +138,10 @@ function Signup({setCurrentUser}) {
                         </div>
                         :
                         null}
-                        <Form.Check required className="p-2 ms-4" type="checkbox" label="I agree to the terms and conditions ADD LINK WHEN READY" />
+                        <Form.Group className="pt-2">
+                            <Form.Label>Please read our <Link to="/privacypolicyt&cs" target="_blank" rel="noreferrer">Privacy Policy and T&C's</Link> before proceding:</Form.Label>
+                            <Form.Check required type="checkbox" label="I have read Craft Corner's privacy policy and agree to the terms and conditions" />
+                        </Form.Group>
                         <Button type="submit" variant="primary" disabled={isLoading} className="text-white mt-3 ms-2">Create Account</Button>
                         <p className="pt-4 px-2">Already have an account? Log in <Link to="/login">here</Link></p>
                     </Form>

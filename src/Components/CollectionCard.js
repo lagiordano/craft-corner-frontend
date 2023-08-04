@@ -1,17 +1,17 @@
 import React, {useState, useEffect} from "react";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import projectPlaceholder from "../images/projectPlaceholder.jpg";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import DeleteConfirmation from "./DeleteConfirmation";
 
 
-function CollectionCard({completedStatus, project, setCollectionFilter, setReRender, reRender, setCurrentPage}) {
+function CollectionCard({completedStatus, project, setCollectionFilter, setReRender, reRender, setCurrentPage, currentPage}) {
 
    
-   
+   const location = useLocation();
     const [completedValue, setCompletedValue] = useState(completedStatus)
     const [userProjectId, setUserProjectId] = useState(null);
     const [hasError, setHasError] = useState(false)
@@ -97,7 +97,7 @@ function CollectionCard({completedStatus, project, setCollectionFilter, setReRen
             },
             body: JSON.stringify({
                 project_id: project.id,
-                completed_status: "wish list"
+                completed_status: "to-do"
             })
         })
         .then(r => {
@@ -124,7 +124,7 @@ function CollectionCard({completedStatus, project, setCollectionFilter, setReRen
                 </Card.Body>
                 :
                 <>
-                <Link to={`/projects/${project.id}`} state={{from: "Collection"}} className="text-decoration-none">
+                <Link to={`/projects/${project.id}`} state={{from: "Collection", currentPage: currentPage, pathname: location.pathname}} className="text-decoration-none">
                     <Card.Img variant="top" src={project.image || projectPlaceholder} alt={project.title} />
                     <Card.Body>
                         <Card.Text className="text-secondary text-capitalize text-strong">{project.title}</Card.Text>
@@ -134,7 +134,7 @@ function CollectionCard({completedStatus, project, setCollectionFilter, setReRen
                     <>
                         <div className="justify-content-center d-flex mt-auto">
                             <Form.Select size="sm" onChange={handleChange} className="w-75 text-secondary" defaultValue={completedValue}>
-                                <option value="wish list">Wish List</option>
+                                <option value="to-do">To-Do</option>
                                 <option value="in progress">In Progress</option>
                                 <option value="completed">Completed</option>
                             </Form.Select>

@@ -34,7 +34,7 @@ function CollectionHeader ({currentUser, setCollectionFilter, collectionFilter, 
                     <Row className="w-100">
                         <Col className="d-flex justify-content-evenly">
                             <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="in progress" active={collectionFilter === "in progress" ? true : false}>In Progress</Button>
-                            <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="wish list" active={collectionFilter === "wish list" ? true : false}>Wish List</Button>
+                            <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="to-do" active={collectionFilter === "to-do" ? true : false}>To-Do</Button>
                             <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="completed" active={collectionFilter === "completed" ? true : false}>Completed</Button>
                             <Button variant="outline-secondary" size="sm" className="px-3" onClick={handleCollectionFilterClick} value="all" active={collectionFilter === "all" ? true : false}>All Projects</Button>
                             <Button variant="outline-secondary" size="sm" onClick={handleCollectionFilterClick} value="shared by user" active={collectionFilter === "shared by user" ? true : false}>Shared By You</Button>
@@ -43,9 +43,9 @@ function CollectionHeader ({currentUser, setCollectionFilter, collectionFilter, 
                 </Col>
                 <Col sm={12} className="d-md-none d-flex justify-content-center">
                     <Form>
-                    <Form.Select onChange={handleChange} id="collection-select" value={collectionFilter} className="bg-secondary text-white">
+                    <Form.Select onChange={handleChange} id="collection-select" size="sm" className="bg-secondary text-white">
                         <option value="in progress">In Progress</option>
-                        <option value="wish list">Wish List</option>
+                        <option value="to-do">To-Do</option>
                         <option value="completed">Completed</option>
                         <option value="all">All Projects</option>
                         <option value="shared by user">Shared By Me</option>

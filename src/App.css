@@ -38,14 +38,14 @@ footer {
 
 @media (min-width: 576px){
   .card-img-top{
-    height: 20vh;
+    height: 25vh;
     width: 100%;
     object-fit: cover;
   }
 
   .project{
     width: 90%;
-    height: 45vh;
+    height: 40vh;
   }
 
   #login{
@@ -131,3 +131,6 @@ li.invalid{
   width:90%;
 }
 
+#project-description{
+  white-space: pre-wrap;
+}

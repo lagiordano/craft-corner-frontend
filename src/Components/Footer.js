@@ -7,13 +7,10 @@ import Col from "react-bootstrap/Col";
 function Footer() {
 
     return (
-        <footer className="bg-primary p-1">
-            <Row className="d-flex justify-content-center mb-0">
+        <footer className="bg-primary">
+            <Row className="d-flex justify-content-center">
                 <Col>
-                    <Link className="text-decoration-none pl-3 align-items-center text-white" to={"privacypolicy+T&C's"}>Privacy Policy and Terms of Use</Link>
-                </Col>
-                <Col>
-                    <Link className="fs-6 text-decoration-none pl-3 text-white" to={"communityguidelines"}>Community Guidelines</Link>
+                    <Link className="text-decoration-none align-items-center text-white" to={"privacypolicyt&cs"}>Privacy Policy and Terms & Conditions</Link>
                 </Col>
             </Row>
         </footer>

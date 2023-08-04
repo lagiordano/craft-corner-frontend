@@ -77,7 +77,7 @@ function EditProject() {
         .then(r => {
             if (r.ok) {
                 setErrors(null)
-                navigate(`/projects/${project.id}`, {state: {from: "edit"}})
+                navigate(`/projects/${project.id}`, {state: {from: "edit"}, currentPage: null})
             } else {
                 r.json().then(json => {
                     setIsLoading(false)

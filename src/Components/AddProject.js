@@ -33,6 +33,19 @@ function AddProject() {
     })
 
 
+    // Reset's state of newProject.image if user clicks "has url"
+    function handleHasLink(){
+        setHasLink(true)
+        setNewProject({...newProject, image: ""})
+    }
+
+    // Reset's state of newProject.url if user clicks "no url"
+    function handleNoLink() {
+        setHasLink(false)
+        setNewProject({...newProject, url: ""})
+    }
+
+
     function handleImageChange(e) {
         setNewProject({
             ...newProject, 
@@ -58,17 +71,27 @@ function AddProject() {
 
 
     function handleSubmit(e){
+    
         e.preventDefault();
         setIsLoading(true);
+        setErrors(null);
 
+        if (!hasLink) {
+            setNewProject({...newProject, url: ""})
+            
+        } else {
+            setNewProject({...newProject, image: ""})
+        };
+
+        // Create form data object (required for image storage with cloudinary)
         const formData = new FormData();
         formData.append('title', newProject.title);
         formData.append('category', newProject.category);
-        if (newProject.url !== "") {
-            formData.append('url', newProject.url);
-        };
         if (newProject.image !== "") {
             formData.append('image', newProject.image)
+        };
+        if (newProject.url !== "") {
+            formData.append('url', newProject.url);
         };
         formData.append('description', newProject.description);
         formData.append('completed_status', newProject.completedStatus);
@@ -81,7 +104,6 @@ function AddProject() {
         .then(r => {
             if (r.ok) {
                 r.json().then(json => {
-                    setErrors(null)
                     navigate(`/projects/${json.id}`)
                 })
             } else {
@@ -99,12 +121,12 @@ function AddProject() {
         <Container>
             <Row className="d-flex justify-content-center mx-1">
                 <Col xs={12} md={10} lg={9} className="bg-white p-2 p-md-3 p-lg-4 my-3 m-md-5 rounded border border-muted text-secondary">
-                    <h3 className="p-2">Add a New Project</h3>
+                    <h2 className="p-2">Add a New Project</h2>
                     <h6 className="p-2">This will be added to your collection and be made available in our shared projects page.</h6>
                     <h6 className="p-2">Before we start, is the project you are adding from another website? (e.g. blog, social media) </h6>
                     <ButtonGroup className="p-2">
-                                <ToggleButton type="radio" variant="outline-secondary" name="link" size="sm" onClick={() => setHasLink(true)} checked={hasLink === true}>Yes</ToggleButton>
-                                <ToggleButton type="radio" variant="outline-secondary" name="link" size="sm" onClick={() => setHasLink(false)} checked={hasLink === false}>No</ToggleButton>
+                                <ToggleButton type="radio" variant="outline-secondary" name="link" onClick={handleHasLink} checked={hasLink === true}>Yes</ToggleButton>
+                                <ToggleButton type="radio" variant="outline-secondary" name="link" onClick={handleNoLink} checked={hasLink === false}>No</ToggleButton>
                     </ButtonGroup>
                         
                     <Form onSubmit={handleSubmit} className={hasLink === null ? "d-none" : "text-start pt-3"}>
@@ -114,6 +136,7 @@ function AddProject() {
                                 </Col>
                                 <Col sm={12} lg={10}>
                                     <Form.Control type="text" name="title" required placeholder="Enter project title here..." onChange={handleFormChange} />
+                                    <Form.Text className="text-light">Max of 60 characters allowed</Form.Text>
                                 </Col>
                         </Row>
                         <Row className="p-2">
@@ -140,6 +163,7 @@ function AddProject() {
                             </Col>
                             <Col xs={12} lg={10}>
                                 <Form.Control type="url" name="url" required placeholder="example.com/craftproject" value={newProject.url} onChange={handleFormChange} />
+                                <Form.Text className="text-light">We will use an image from the url you provide</Form.Text>
                             </Col>
                         </Row>
                         :
@@ -149,32 +173,31 @@ function AddProject() {
                         { hasLink ? 
                         null
                         :
-                        <>
-                            <Row className="p-2">
-                                <Col xs={12} lg={2}>
-                                    <Form.Label>Upload image:</Form.Label>
-                                </Col>
-                                <Col xs={12} lg={10}>
-                                    <Form.Control type="file" accept="image/*" name="image" onChange={handleImageChange}/>
-                                </Col>
-                            </Row>
-                            <Row className="p-2">
-                                <Col xs={12} lg={2}>
-                                    <Form.Label>Description:</Form.Label>
-                                </Col>
-                                <Col xs={12} lg={10}>
-                                    <Form.Control required as="textarea" name="description" rows={10} onChange={handleFormChange} />
-                                </Col>
-                            </Row>
-                        </> }
+                        <Row className="p-2">
+                            <Col xs={12} lg={2}>
+                                <Form.Label>Upload image:</Form.Label>
+                            </Col>
+                            <Col xs={12} lg={10}>
+                                <Form.Control type="file" accept="image/*" name="image" onChange={handleImageChange}/>
+                            </Col>
+                        </Row>
+                        }
 
+                        <Row className="p-2">
+                            <Col xs={12} lg={2}>
+                                <Form.Label>Description:</Form.Label>
+                            </Col>
+                            <Col xs={12} lg={10}>
+                                <Form.Control required={hasLink ? false : true} as="textarea" name="description" rows={10} onChange={handleFormChange} />
+                            </Col>
+                        </Row>
                         <Row className="p-2">
                             <Col xs={12} lg={2}>
                                 <Form.Label>Your Progress:</Form.Label>
                             </Col>
                             <Col xs={12} lg={10}>
                                 <Form.Check inline required name="completedStatus" label="In Progress" type="radio" value="in progress" onChange={handleFormChange}/>
-                                <Form.Check inline required name="completedStatus" label="Wish List" type="radio" value="wish list" onChange={handleFormChange} />
+                                <Form.Check inline required name="completedStatus" label="To-Do" type="radio" value="to-do" onChange={handleFormChange} />
                                 <Form.Check inline required name="completedStatus" label="Completed" type="radio" value="completed" onChange={handleFormChange}/><br/>
                                 <Form.Text className="ps-1 text-light">Have you already started this project? Select a status above to help sort your collection</Form.Text>
                             </Col>

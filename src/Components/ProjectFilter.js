@@ -6,7 +6,7 @@ import Col from "react-bootstrap/Col";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Button from "react-bootstrap/Button";
 
-function ProjectFilter({search, setSearch, select, setSelect, setCurrentPage }) {
+function ProjectFilter({search, setSearch, select, setSelect, setCurrentPage, currentUser }) {
 
     const navigate= useNavigate();
 
@@ -22,7 +22,7 @@ function ProjectFilter({search, setSearch, select, setSelect, setCurrentPage }) 
 
     return (
         <Row className="px-2 d-flex align-items-center">
-            <Col lg={3}>
+            <Col lg={3} className={currentUser ? null : "d-none"}>
                 <Button variant="primary" className="text-white w-100 h-100 mt-3 my-lg-4 py-lg-2" size="lg" onClick={() => navigate("/projects/addproject")}>Add Project</Button>
             </Col>
             <Col lg={4}>
@@ -37,7 +37,7 @@ function ProjectFilter({search, setSearch, select, setSelect, setCurrentPage }) 
                     </Form.Select>
                 </FloatingLabel>
             </Col>
-            <Col lg={5}>
+            <Col lg={currentUser ? 5 : 8}>
                 <FloatingLabel label="Search:" className="mb-3 my-lg-4 p-0">
                     <Form.Control type="text" onChange={handleSearchChange} value={search} />
                 </FloatingLabel>

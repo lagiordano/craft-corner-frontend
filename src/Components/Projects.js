@@ -7,15 +7,18 @@ import ProjectCard from "./ProjectCard";
 import ErrorMessages from "./ErrorMessages";
 import Button from "react-bootstrap/Button";
 import PaginationComponent from "./PaginationComponent";
+import { useLocation } from "react-router-dom";
 
 
-function Projects() {
+function Projects({currentUser}) {
 
     useEffect( () => {
         document.title = "Craft Corner | Shared Projects";
         document.body.style = 'background: white;';
         localStorage.clear();
     }, [])
+
+    const location = useLocation();
 
     const storedSearch = localStorage.getItem('projectsSearch');
     const storedSelect = localStorage.getItem('projectsSelect');
@@ -25,7 +28,10 @@ function Projects() {
     const [select, setSelect] = useState(storedSelect || "all")
     const [errors, setErrors] = useState(null)
 
-    
+ 
+
+
+
     useEffect( () => {
         fetch("/projects")
         .then(r => {
@@ -50,7 +56,7 @@ function Projects() {
 
 
      // pagination 
-     const [currentPage, setCurrentPage] = useState(1);
+     const [currentPage, setCurrentPage] = useState(location.state ? location.state.currentPage : 1);
      const projectsPerPage = 12;
      const indexOfLastProject = currentPage * projectsPerPage;
      const indexOfFirstProject = indexOfLastProject - projectsPerPage;
@@ -81,12 +87,12 @@ function Projects() {
         <Container>
             <Row className="p-4 my-2 bg-warning text-secondary full-width-row">
                 <Col>
-                    <h3>Projects Shared by Our Community</h3>
+                    <h2>Our Projects</h2>
                 </Col>
             </Row>
             <Row className="justify-content-center d-flex">
                 <Col>
-                    <ProjectFilter search={search} setSearch={setSearch} select={select} setSelect={setSelect} setCurrentPage={setCurrentPage}/>
+                    <ProjectFilter search={search} setSearch={setSearch} select={select} setSelect={setSelect} setCurrentPage={setCurrentPage} currentUser={currentUser} />
                 </Col>
             </Row>
         </Container>
@@ -97,13 +103,13 @@ function Projects() {
         <Container>
                 {(projectsToDisplay.length === 0) ? 
                 <Row className="text-secondary">
-                    <h5 className="p-3">Looks like there are no project matching your search</h5>
-                    <h5 className="p-3">Try adjusting your filters above or click <Button variant="link" className="m-0 p-0" onClick={handleResetClick}><h5 className="p-0 mb-1">here</h5></Button> to view all projects</h5>
+                    <h5 className="p-3">Looks like there are no projects matching your search</h5>
+                    <h5 className="p-3">Try adjusting your search above or click <Button variant="link" className="m-0 p-0" onClick={handleResetClick}><h5 className="p-0 mb-1">here</h5></Button> to view all projects</h5>
                 </Row>
                 :
                 <>                
                 <Row xs={1} sm={2} md={3} lg={4} className="g-4 mx-2 justify-content-center d-flex">
-                    {currentProjects.map( project => <ProjectCard image={project.image} title={project.title} id={project.id} key={project.id}/>)}
+                    {currentProjects.map( project => <ProjectCard image={project.image} title={project.title} id={project.id} key={project.id} currentPage={currentPage}/>)}
                 </Row>
                 <Row className="pt-4 pb-2">
                     <Col className="d-flex justify-content-center">

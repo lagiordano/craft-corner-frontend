@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import CollectionCard from "./CollectionCard";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import PaginationComponent from "./PaginationComponent";
 import CollectionHeader from "./CollectionHeader";
 
@@ -17,6 +17,8 @@ function Dashboard({currentUser}) {
         document.body.style = 'background: white;';
         localStorage.clear();
     }, [])
+
+    const location = useLocation(); 
 
     const storedSearch = localStorage.getItem('collectionSearch');
     const storedSelect = localStorage.getItem('collectionSelect');
@@ -59,7 +61,7 @@ function Dashboard({currentUser}) {
 
 
      // pagination 
-     const [currentPage, setCurrentPage] = useState(1);
+     const [currentPage, setCurrentPage] = useState(location.state ? location.state.currentPage : 1);
      const projectsPerPage = 12;
      const indexOfLastProject = currentPage * projectsPerPage;
      const indexOfFirstProject = indexOfLastProject - projectsPerPage;
@@ -100,7 +102,7 @@ function Dashboard({currentUser}) {
         <CollectionHeader currentUser={currentUser} setCollectionFilter={setCollectionFilter} collectionFilter={collectionFilter} setCurrentPage={setCurrentPage} setReRender={setReRender} reRender={reRender}/>
         <Container>
             <Row className="justify-content-center d-flex">
-                <ProjectFilter search={search} setSearch={setSearch} select={select} setSelect={setSelect} setCurrentPage={setCurrentPage}/>
+                <ProjectFilter search={search} setSearch={setSearch} select={select} setSelect={setSelect} setCurrentPage={setCurrentPage} currentUser={currentUser}/>
             </Row>
         </Container>
         <Container className="my-2">
@@ -109,16 +111,21 @@ function Dashboard({currentUser}) {
             <>
                 {projectsToDisplay.length === 0 ?
                 <Row className="text-secondary d-flex justify-content-center">
-                    <Col xs={12} md={10} lg={8}>
-                        <h5 className="p-3">We couldn't find any projects in your collection</h5>
-                        <h5 className="p-3">Try adjusting your filters above or click <Button variant="link" className="m-0 p-0" onClick={handleResetClick}><h5 className="p-0 mb-1">here</h5></Button> to view all projects in your collection</h5>
-                        <h5 className="p-3">Haven't added any projects yet? No worries! Head over to <Link to="/projects">projects</Link> for inspiration or you can <Link to="/projects/addproject">add a new project</Link> yourself</h5>
+                    <Col xs={12} md={10} lg={9}>
+                        {collection.length === 0 ? 
+                         <h6 className="p-3">There are currently no projects in your collections '{collectionFilter}' section</h6> 
+                         :
+                         <h6 className="p-3">We couldn't find any projects matching your search</h6>
+                        }
+                       
+                        <h6 className="p-3">Try adjusting your filters above or click <Button variant="link" className="m-0 p-0" onClick={handleResetClick}><h6 className="p-0 mb-1">here</h6></Button> to view all projects in your collection</h6>
+                        <h6 className="p-3">Haven't added any projects yet? No worries! Head over to <Link to="/projects">projects</Link> for inspiration or you can <Link to="/projects/addproject">add a new project</Link> yourself</h6>
                     </Col>
                 </Row>
                 :
                 <>
                 <Row xs={1} sm={2} md={3} xl={4} className="g-4 mx-2 justify-content-center d-flex">
-                    {currentProjects.map( item => <CollectionCard project={item.project} completedStatus={item.completed_status} key={item.id} setCollectionFilter={setCollectionFilter} setReRender={setReRender} reRender={reRender} setCurrentPage={setCurrentPage}/>)}
+                    {currentProjects.map( item => <CollectionCard project={item.project} completedStatus={item.completed_status} key={item.id} setCollectionFilter={setCollectionFilter} setReRender={setReRender} reRender={reRender} setCurrentPage={setCurrentPage} currentPage={currentPage} />)}
                 </Row>
                 <Row className="pt-4">
                     <Col className="d-flex justify-content-center">
