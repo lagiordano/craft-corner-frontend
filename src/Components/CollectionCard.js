@@ -20,7 +20,7 @@ function CollectionCard({completedStatus, project, setCollectionFilter, setReRen
     const [show, setShow] = useState(false)
     const handleClose = () => setShow(false)
     
-    // confirms if project is currently in collection
+    // checks if project is currently in collection
     useEffect( () => {
         fetch(`/check_in_collection/${project.id}`)
         .then(r => {
@@ -40,7 +40,6 @@ function CollectionCard({completedStatus, project, setCollectionFilter, setReRen
     }, [])
 
     
-
 
     //  updates completed status of user-project
     function handleChange(e) {

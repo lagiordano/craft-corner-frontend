@@ -52,7 +52,7 @@ function EditProject() {
     }
 
 
-
+    // Submits updates to project. Users are only given option to edit if it is a project they originally shared
     function handleSubmit(e){
         e.preventDefault();
         setIsLoading(true);

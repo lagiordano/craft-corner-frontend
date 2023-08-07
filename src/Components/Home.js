@@ -2,11 +2,9 @@ import React, {useEffect, useState} from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import ProjectCard from "./ProjectCard";
 import UnauthorizedModal from "./UnauthorizedModal";
-import { Button } from "react-bootstrap";
 
 function Home() {
 
@@ -23,6 +21,8 @@ function Home() {
         localStorage.clear();
     }, [])
 
+
+    // Shows popup advising user signup or login to use feature when redirected by protected user route
     useEffect(() => {
         if (state) {
             setShow(true)
@@ -32,6 +32,7 @@ function Home() {
     }, [])
 
 
+    // Receives 4 projects with the most "adds" to display on home page
     useEffect( () => {
         fetch("/popular_sample")
         .then(r => {
@@ -59,10 +60,10 @@ function Home() {
                     <div className="bg-white rounded border border-primary p-3 p-lg-4 m-2 mx-lg-5 text-start">
                         <h6 className="text-center">What can I do on Craft Corner?</h6>
                         <ul className="mb-0">
-                            <li>Browse great stash of projects shared by our users</li>
+                            <li>Browse the great stash of projects shared by our users</li>
                             <li>Save projects that catch your eye to your to-do list for safe keeping</li>
                             <li>Keep track of your on-the-go and completed projects</li>
-                            <li>Easily add new projects from blogs, social media, or your imagination</li>
+                            <li>Easily add new projects from blogs, social media, or your own imagination</li>
                         </ul>
                     </div>
                 </Col>

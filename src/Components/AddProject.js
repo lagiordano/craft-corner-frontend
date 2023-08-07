@@ -70,6 +70,7 @@ function AddProject() {
     };
 
 
+    // Submits new project
     function handleSubmit(e){
     
         e.preventDefault();
@@ -125,8 +126,8 @@ function AddProject() {
                     <h6 className="p-2">This will be added to your collection and be made available in our shared projects page.</h6>
                     <h6 className="p-2">Before we start, is the project you are adding from another website? (e.g. blog, social media) </h6>
                     <ButtonGroup className="p-2">
-                                <ToggleButton type="radio" variant="outline-secondary" name="link" onClick={handleHasLink} checked={hasLink === true}>Yes</ToggleButton>
-                                <ToggleButton type="radio" variant="outline-secondary" name="link" onClick={handleNoLink} checked={hasLink === false}>No</ToggleButton>
+                                <ToggleButton type="radio" variant="outline-secondary" name="link" size="sm" onClick={handleHasLink} checked={hasLink === true}>Yes</ToggleButton>
+                                <ToggleButton type="radio" variant="outline-secondary" name="link" size="sm" onClick={handleNoLink} checked={hasLink === false}>No</ToggleButton>
                     </ButtonGroup>
                         
                     <Form onSubmit={handleSubmit} className={hasLink === null ? "d-none" : "text-start pt-3"}>

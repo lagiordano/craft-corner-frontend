@@ -10,6 +10,7 @@ function ProjectCard({image, title, id, currentPage}) {
 
     const location = useLocation();
     
+    // passes previous location on to project component for user to easily return after viewing indiviudal project
     let fromValue;
     if (location.pathname === "/") {
         fromValue = "Home" 

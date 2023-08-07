@@ -26,11 +26,13 @@ function AccountInformation ({currentUser, setCurrentUser}) {
     }, [])
 
     
+    // Enables form for users to edit username and email
     function handleUpdateClick() {
         setButtonDisabled(true)
         setFormDisabled(false)
     }
 
+    // Disables form and resets username and email to inital value
     function handleCancelClick() {
         setErrors(null);
         setUsername(currentUser.username);
@@ -39,6 +41,7 @@ function AccountInformation ({currentUser, setCurrentUser}) {
         setButtonDisabled(false);
     }
 
+    // Saves updated user details
     function handleSubmit(e){
         e.preventDefault()
         setIsLoading(true);
@@ -70,6 +73,8 @@ function AccountInformation ({currentUser, setCurrentUser}) {
         .catch(() => setErrors(["Could not update account details at this time"]))
     }
     
+
+    // Deletes user account 
     function handleDelete() {
         setIsLoading(true)
 

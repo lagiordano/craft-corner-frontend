@@ -87,7 +87,7 @@ function Projects({currentUser}) {
         <Container>
             <Row className="p-4 my-2 bg-warning text-secondary full-width-row">
                 <Col>
-                    <h2>Our Projects</h2>
+                    <h2>Projects Shared By Our Crafters</h2>
                 </Col>
             </Row>
             <Row className="justify-content-center d-flex">

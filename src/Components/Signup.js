@@ -23,31 +23,6 @@ function Signup({setCurrentUser}) {
         document.body.style = 'background: rgb(250,223,223);';
     }, [])
 
-    // const PASSWORD_VALIDATION = [
-    //     {label: "At least one uppercase letter", pattern: new RegExp(/.*[A_Z]/)},
-    //     {label: "At least one lowercase letter", pattern: new RegExp(/.*[a-z]/)},
-    //     {label: "At least one number", pattern: new RegExp(/.*\d/)},
-    // ]
-    // const PASSWORD_UPPERCASE = new RegExp(/.*[A_Z]/);
-    // const PASSWORD_LOWERCASE = new RegExp(/.*[a-z]/);
-    // const PASSWORD_NUMBER = new RegExp(/.*\d/);
-    // const PASSWORD_LENGTH = new RegExp(/.{8,}$/);
-
-    // if (!password.match(PASSWORD_UPPERCASE)) {
-    //     setErrors([...errors, "At least one uppercase letter"])
-    // } 
-    // if (!password.match(PASSWORD_LOWERCASE)) {
-    //     setErrors([...errors, "At least one lower case "])
-    // }
-
-    // const rules = [
-    //     {label: "At least one uppercase", pattern: PASSWORD_UPPERCASE},
-    //     {label: "At least one lowercase", pattern: PASSWORD_LOWERCASE},
-    //     {label: "At least one number", pattern: PASSWORD_NUMBER},
-    //     {label: "At least 8 characters", pattern: PASSWORD_LENGTH}
-    // ];
-
-
     function handleSignupChange(e) {
         const name = e.target.name
         const value = e.target.value
@@ -139,7 +114,7 @@ function Signup({setCurrentUser}) {
                         :
                         null}
                         <Form.Group className="pt-2">
-                            <Form.Label>Please read our <Link to="/privacypolicyt&cs" target="_blank" rel="noreferrer">Privacy Policy and T&C's</Link> before proceding:</Form.Label>
+                            <Form.Label>Please read our <Link to="/privacypolicyt&cs" target="_blank" rel="noreferrer">Privacy Policy and T&C's</Link> before proceeding:</Form.Label>
                             <Form.Check required type="checkbox" label="I have read Craft Corner's privacy policy and agree to the terms and conditions" />
                         </Form.Group>
                         <Button type="submit" variant="primary" disabled={isLoading} className="text-white mt-3 ms-2">Create Account</Button>

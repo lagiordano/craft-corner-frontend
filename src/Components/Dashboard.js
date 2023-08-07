@@ -26,7 +26,7 @@ function Dashboard({currentUser}) {
 
 
     const [collection, setCollection] = useState([]);
-    const [collectionFilter, setCollectionFilter] = useState(storedCollectionFilter || "in progress");
+    const [collectionFilter, setCollectionFilter] = useState(storedCollectionFilter || "all");
     const [reRender, setReRender] = useState(false)
     const [errors, setErrors] = useState(null);
     const [search, setSearch] = useState(storedSearch || "")
@@ -51,12 +51,12 @@ function Dashboard({currentUser}) {
         .catch(() => setErrors(["Unable to load your collection at this time"]))
     }, [collectionFilter, reRender])
 
+
      // filter projects and find which ones to display 
      const filteredProjects = collection.filter( item => {
         if (select === "all") return true;
         return item.project.category === select;
     });
-
     const projectsToDisplay = filteredProjects.filter( item => item.project.title.toLowerCase().includes(search.toLowerCase()));
 
 
@@ -67,7 +67,6 @@ function Dashboard({currentUser}) {
      const indexOfFirstProject = indexOfLastProject - projectsPerPage;
      const currentProjects = projectsToDisplay.slice(indexOfFirstProject, indexOfLastProject);
      const nPages = Math.ceil(projectsToDisplay.length / projectsPerPage)
-
 
 
     // manage filter data in local storage
@@ -113,12 +112,12 @@ function Dashboard({currentUser}) {
                 <Row className="text-secondary d-flex justify-content-center">
                     <Col xs={12} md={10} lg={9}>
                         {collection.length === 0 ? 
-                         <h6 className="p-3">There are currently no projects in your collections '{collectionFilter}' section</h6> 
+                         <h6 className="p-3">There are currently no projects in the '{collectionFilter}' section of your collection</h6> 
                          :
                          <h6 className="p-3">We couldn't find any projects matching your search</h6>
                         }
                        
-                        <h6 className="p-3">Try adjusting your filters above or click <Button variant="link" className="m-0 p-0" onClick={handleResetClick}><h6 className="p-0 mb-1">here</h6></Button> to view all projects in your collection</h6>
+                        <h6 className="p-3">Try adjusting your filters above or click <Button variant="link" className="m-0 p-0" onClick={handleResetClick}><h6 className="p-0 mb-1">here</h6></Button> to view all of your saved projects</h6>
                         <h6 className="p-3">Haven't added any projects yet? No worries! Head over to <Link to="/projects">projects</Link> for inspiration or you can <Link to="/projects/addproject">add a new project</Link> yourself</h6>
                     </Col>
                 </Row>
