@@ -1,6 +1,6 @@
 # Craft Corner 
 
-Craft Corner is a React application where users share, save, and organise their favourite craft projects. You can find the code for Craft Corner's backend [here](https://github.com/lagiordano/craft-corner-backend), built with Ruby on Rails. 
+Craft Corner is a React application where users can share, save, and organise their favourite craft projects. You can find the code for Craft Corner's backend [here](https://github.com/lagiordano/craft-corner-backend), built with Ruby on Rails. 
 
 
 ## Installation 
@@ -19,7 +19,7 @@ Run `npm start` to start the application. To use with the Rails backend, fork an
 
 ## Contributing 
 
-Bug reports and pull requests are welcome at https://github.com/lagiordano/craft-corner-frontend. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the code of conduct. 
+Bug reports and pull requests are welcome at https://github.com/lagiordano/craft-corner-frontend. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/lagiordano/craft-corner-frontend/blob/main/CODE_OF_CONDUCT.md). 
 
 
 ## License 
