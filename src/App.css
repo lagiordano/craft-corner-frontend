@@ -56,8 +56,8 @@ footer {
 
 @media(min-width: 992px){
   .project{
-    width: 90%;
-    height: 35vh;
+    width: 85%;
+    height: 40vh;
   }
 
   #signup{
@@ -69,7 +69,7 @@ footer {
   }
 
   #project-container{
-    width: 75%
+    width: 80%
   }
 }
 

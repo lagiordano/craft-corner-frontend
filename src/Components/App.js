@@ -38,11 +38,8 @@ function App() {
         })
 
       } else {
-        r.json()
-        .then(json => {
-          setIsLoading(false)
-          console.log(json.errors)
-        })
+        setIsLoading(false)
+        setCurrentUser(null)
       };
     })
 

@@ -1,14 +1,10 @@
 import React, {useEffect} from "react";
-import Modal from "react-bootstrap/Modal";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
-import { useNavigate } from "react-router-dom";
 
 function TermsAndConditions() {
 
-    const navigate = useNavigate();
 
     useEffect( () => {
         document.title = "Craft Corner | Terms and Conditions";

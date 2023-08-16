@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import projectPlaceholder from "../images/projectPlaceholder.jpg";
 import ErrorMessages from "./ErrorMessages";
 import UnauthorizedModal from "./UnauthorizedModal";
+import Comments from "./Comments";
 
 function Project({currentUser}) {
 
@@ -54,9 +55,12 @@ function Project({currentUser}) {
         fetch(`/projects/${params.id}`)
         .then(r => {
             if (r.ok) {
-                r.json().then(json => setProject(json));
+                r.json().then(json => {
+                    setProject(json)
+                    console.log(json)
+                });
             } else {
-                setErrors(["Could not load project Information"]);
+                setErrors(["Could not load project information"]);
             }
             setIsLoading(false);
         })
@@ -112,6 +116,7 @@ function Project({currentUser}) {
         }
      };
     
+     
 
     return (
        
@@ -178,6 +183,13 @@ function Project({currentUser}) {
                 </Row>
                 :
                 null}
+                {project.comments === undefined ? 
+                null 
+                :
+                <Container>
+                    <Comments comments={project.comments}/>
+                </Container>
+                }
             </Row>
         </Container>
         
