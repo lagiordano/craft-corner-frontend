@@ -6,46 +6,75 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
+import ErrorMessages from "./ErrorMessages";
+import Comment from "./Comment";
 
 
-function Comments ({comments}) {
+function Comments ({comments, projectID, currentUser}) {
 
 
     const [newComment, setNewComment] = useState("")
     const [commentsList, setCommentsList] = useState(comments);
+    const [errors, setErrors] = useState(null);
 
-    console.log(commentsList)
+    console.log(comments)
+    
+    function handleAddComment() {
+        fetch("/comments", {
+            method: "POST", 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                project_id: projectID,
+                comment_text: newComment
+            })
+        })
+        .then(r => {
+            if (r.ok) {
+                r.json().then(json => setCommentsList([...commentsList, json]))
+            } else {
+                r.json().then(json => json.errors ? setErrors(json.errors) : setErrors(["Unable to add new project at this time"]))
+            }
+        })
+    }
+
+    function handleDeleteComment (comment) {
+        const updatedComments = commentsList.filter(c => c.id !== comment.id);
+        setCommentsList(updatedComments)
+    }
   
 
     return (
         <Container>
             <Row>
                 <Col>
-                    <h3>Comments</h3>
+                    <h4 className="p-1">Comments</h4>
                 </Col>
             </Row>
             <Row className="my-1 mx-md-2 mx-lg-5">
                 <Col>
-                    <Form >
+                    <Form onSubmit={handleAddComment}>
                         <InputGroup >
-                            <Form.Control placeholder="Enter your comment here..." value={newComment} onChange={e => setNewComment(e.target.value)}/>
-                            <Button className="text-white">Add</Button>
+                            <Form.Control placeholder="Add a comment..." value={newComment} onChange={e => setNewComment(e.target.value)}/>
+                            <Button className="text-white" type="submit">Add</Button>
                         </InputGroup>
                     </Form>
                 </Col>
             </Row>
+            {errors ? 
+                <Row className="p-0 m-0">
+                    <ErrorMessages errors={errors} />
+                </Row>
+            :
+            null }
             <Row className="my-1 mx-md-2 mx-md-5">
                 <Col className="text-start">
                     {commentsList === [] ? 
-                    <p>There are no comments on this project yet</p>    
+                    <p className="text-secondary text-center pt-3">There are no comments on this project yet</p>    
                     :
                     <div>
-                        {commentsList.map(comment => {
-                            return <Card key={comment.id} className="p-1 p-md-2 my-2 m-md-2"> 
-                                        <Card.Subtitle className="p-1">{comment.username}<span className="text-end text-light fs-6"> - {comment.posted}</span></Card.Subtitle>
-                                        <Card.Text className="px-1 pb-1">{comment.comment_text}</Card.Text>
-                                    </Card>
-                        })}
+                        {commentsList.map(comment => <Comment comment={comment} currentUser={currentUser} key={comment.id} onDeleteComment={handleDeleteComment}/> )}
                     </div>
                     }
                 </Col>

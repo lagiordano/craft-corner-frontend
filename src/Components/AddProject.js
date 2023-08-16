@@ -168,12 +168,7 @@ function AddProject() {
                             </Col>
                         </Row>
                         :
-                        null
-                        }
-
-                        { hasLink ? 
-                        null
-                        :
+                        <>
                         <Row className="p-2">
                             <Col xs={12} lg={2}>
                                 <Form.Label>Upload image:</Form.Label>
@@ -182,16 +177,16 @@ function AddProject() {
                                 <Form.Control type="file" accept="image/*" name="image" onChange={handleImageChange}/>
                             </Col>
                         </Row>
-                        }
-
                         <Row className="p-2">
                             <Col xs={12} lg={2}>
                                 <Form.Label>Description:</Form.Label>
                             </Col>
                             <Col xs={12} lg={10}>
-                                <Form.Control required={hasLink ? false : true} as="textarea" name="description" rows={10} onChange={handleFormChange} />
+                                <Form.Control required as="textarea" name="description" rows={10} onChange={handleFormChange} />
                             </Col>
                         </Row>
+                        </>
+                        }
                         <Row className="p-2">
                             <Col xs={12} lg={2}>
                                 <Form.Label>Your Progress:</Form.Label>

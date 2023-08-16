@@ -15,10 +15,13 @@ function Project({currentUser}) {
     const navigate = useNavigate();
     const location = useLocation();
 
+    console.log(location)
+
     const [project, setProject] = useState({})
     const [inCollection, setInCollection] = useState(false)
     const [errors, setErrors] = useState(null)
     const [isLoading, setIsLoading] = useState(true);
+    
     
 
     const [show, setShow] = useState(false)
@@ -47,7 +50,7 @@ function Project({currentUser}) {
             })
             .catch(() => setErrors(["Unable to load project information at this time"]))
         }
-    }, [])
+    }, [project])
     
     // load individual project
     useEffect( () => {
@@ -57,7 +60,6 @@ function Project({currentUser}) {
             if (r.ok) {
                 r.json().then(json => {
                     setProject(json)
-                    console.log(json)
                 });
             } else {
                 setErrors(["Could not load project information"]);
@@ -120,7 +122,7 @@ function Project({currentUser}) {
 
     return (
        
-    <Container className={isLoading ? "d-none" : "my-2"}>
+    <Container className={isLoading ? "d-none" : "mt-2 mb-3"}>
         <Row className="my-3 mt-md-4">
             <Col sm={2} md={4} lg={5} className="d-flex justify-content-start">
                 {
@@ -144,7 +146,7 @@ function Project({currentUser}) {
                 
                 <Col sm={12} md={6}>
                     <div className="m-2 m-md-1 my-lg-2 ms-lg-3 me-lg-0 text-start text-wrap">
-                        <h1 className="text-capitalize">{project.title}</h1>
+                        <h2 className="text-capitalize p-1">{project.title}</h2>
                         {
                             inCollection ? 
                             <Button className="mb-3 mt-1 me-3 text-white"variant="primary" disabled>In your collection</Button>
@@ -164,7 +166,12 @@ function Project({currentUser}) {
                             :
                             null
                         }
-                        <h5 className="pb-2">Shared by: <span className="fs-6">{project.shared_by ? project.shared_by : "Not available" }</span></h5> 
+                        {
+                            project.shared_by ? 
+                            <h5 className="pb-2">Shared by: <span className="fs-6">{project.shared_by}</span></h5>
+                            : 
+                            null 
+                        }
                         <h5 className="pb-2">Last added/edited: <span className="fs-6">{project.added_or_updated_at}</span></h5>
                         <h5 className="pb-2">Total Adds: <span className="fs-6">{project.adds}</span></h5>
                         
@@ -175,19 +182,21 @@ function Project({currentUser}) {
                     <img src={project.image || projectPlaceholder} alt={project.title} className="project m-1 mb-3 ms-md-0 my-md-3  border-primary rounded"/>
                 </Col>
                 {project.description ? 
-                <Row>
-                    <Col sm={12} className="text-start ms-lg-3 pb-2">
-                        <h5>Description:</h5>
-                        <p id="project-description">{project.description}</p>
-                    </Col>
-                </Row>
+                <Container>
+                    <Row>
+                        <Col className="text-start px-4 mt-md-2 mt-lg-3">
+                            <h4 className="text-center">Description</h4>
+                            <p id="project-description">{project.description}</p>
+                        </Col>
+                    </Row>
+                </Container>
                 :
                 null}
                 {project.comments === undefined ? 
                 null 
                 :
-                <Container>
-                    <Comments comments={project.comments}/>
+                <Container className="my-1 my-md-2 mt-lg-3 mb-lg-4">
+                    <Comments comments={project.comments} projectID={project.id} currentUser={currentUser} />
                 </Container>
                 }
             </Row>
