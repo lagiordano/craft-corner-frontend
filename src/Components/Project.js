@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate} from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -11,23 +11,32 @@ import Comments from "./Comments";
 
 function Project({currentUser}) {
 
+    useEffect( () => {
+        window.onpopstate = function(e) {
+            console.log(e)
+        }
+    }, )
+        
+    
+    
+
     const params = useParams()
     const navigate = useNavigate();
-    const location = useLocation();
 
-    console.log(location)
+    // console.log(location)
 
     const [project, setProject] = useState({})
     const [inCollection, setInCollection] = useState(false)
     const [errors, setErrors] = useState(null)
     const [isLoading, setIsLoading] = useState(true);
-    
+    const previousPage = localStorage.getItem('previousLocation')
     
 
     const [show, setShow] = useState(false)
     const handleClose = () => setShow(false)
 
 
+    
     
     useEffect( () => {
         document.body.style = 'background: rgb(250,223,223);';
@@ -50,24 +59,24 @@ function Project({currentUser}) {
             })
             .catch(() => setErrors(["Unable to load project information at this time"]))
         }
-    }, [project])
+    }, [project, currentUser, params.id])
     
+
     // load individual project
     useEffect( () => {
+
         setIsLoading(true);
         fetch(`/projects/${params.id}`)
         .then(r => {
             if (r.ok) {
-                r.json().then(json => {
-                    setProject(json)
-                });
+                r.json().then(json => setProject(json));
             } else {
                 setErrors(["Could not load project information"]);
-            }
+            };
             setIsLoading(false);
         })
         .catch(() => setErrors(["Unable to load project information at this time"]))
-    }, [inCollection]);
+    }, [inCollection, params.id]);
 
     
     // check whether user is logged in
@@ -79,6 +88,7 @@ function Project({currentUser}) {
             setShow(true);
         };
     };
+
    
     // adds project to users collection
     function addToCollection() {
@@ -105,18 +115,18 @@ function Project({currentUser}) {
         .catch(["Could not add project to your collection at this time"])
     };
 
-    // navigate on back click while retinaing page number 
+    
     function handleBackClick() {
-        if (!location.state) return navigate(-1);
         
-        if (location.state.pathname === "/projects") {
-            navigate("/projects", {state: {currentPage: location.state.currentPage}})
-        } else if (location.state.pathname === "/dashboard") {
-            navigate("/dashboard", {state: {currentPage: location.state.currentPage}})
+        if (previousPage && previousPage === "Projects") {
+            const route = previousPage.toLowerCase()
+            navigate(`/${route}`)
+        } else if (previousPage && previousPage === "Collection") {
+            navigate("/dashboard")
         } else {
-            navigate(-1)
+            navigate("/")
         }
-     };
+    }
     
      
 
@@ -128,11 +138,7 @@ function Project({currentUser}) {
                 {
                     errors ? <Button variant="secondary" onClick={() => navigate("/")}>Return Home</Button>
                     :
-                    (location.state && location.state.from === "edit") ? 
-                    <Button variant="secondary" onClick={() => navigate(-3)}>Go Back</Button>
-                    :
-                    <Button variant="secondary" onClick={handleBackClick}>{location.state ? `Back to ${location.state.from}` : "Go Back"}</Button>
-                    // () => navigate(-1, {state: {currentPage: pageNumber}})
+                    <Button variant="secondary" className="text-white" onClick={handleBackClick}>{previousPage ? `Return to ${previousPage}` : "Go Back"}</Button>
                 }
             </Col>
         </Row>

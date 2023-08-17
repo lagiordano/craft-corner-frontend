@@ -7,7 +7,6 @@ import ProjectCard from "./ProjectCard";
 import ErrorMessages from "./ErrorMessages";
 import Button from "react-bootstrap/Button";
 import PaginationComponent from "./PaginationComponent";
-import { useLocation } from "react-router-dom";
 
 
 function Projects({currentUser}) {
@@ -18,7 +17,6 @@ function Projects({currentUser}) {
         localStorage.clear();
     }, [])
 
-    const location = useLocation();
 
     const storedSearch = localStorage.getItem('projectsSearch');
     const storedSelect = localStorage.getItem('projectsSelect');
@@ -27,6 +25,7 @@ function Projects({currentUser}) {
     const [search, setSearch] = useState(storedSearch || "")
     const [select, setSelect] = useState(storedSelect || "all")
     const [errors, setErrors] = useState(null)
+
 
  
 
@@ -45,7 +44,7 @@ function Projects({currentUser}) {
             };
         })
         .catch(() => setErrors(["Unable to load projects at this time"]))
-    }, []);
+    }, [projects]);
 
     const filteredProjects = projects.filter( project => {
         if (select === "all") return true;
@@ -56,13 +55,14 @@ function Projects({currentUser}) {
 
 
      // pagination 
-     const [currentPage, setCurrentPage] = useState(location.state ? location.state.currentPage : 1);
-     const projectsPerPage = 12;
-     const indexOfLastProject = currentPage * projectsPerPage;
-     const indexOfFirstProject = indexOfLastProject - projectsPerPage;
-     const currentProjects = projectsToDisplay.slice(indexOfFirstProject, indexOfLastProject);
-     const numberOfProjects = projectsToDisplay.length
-     const nPages = Math.ceil(numberOfProjects / projectsPerPage)
+    const projectsPageNumber = localStorage.getItem("projectsPageNumber")
+    const [currentPage, setCurrentPage] = useState(parseInt(projectsPageNumber) || 1);
+    const projectsPerPage = 12;
+    const indexOfLastProject = currentPage * projectsPerPage;
+    const indexOfFirstProject = indexOfLastProject - projectsPerPage;
+    const currentProjects = projectsToDisplay.slice(indexOfFirstProject, indexOfLastProject);
+    const numberOfProjects = projectsToDisplay.length
+    const nPages = Math.ceil(numberOfProjects / projectsPerPage)
 
 
     useEffect( () => {
@@ -73,13 +73,20 @@ function Projects({currentUser}) {
         localStorage.setItem('projectsSearch', search)
     }, [search])
 
+    useEffect( () => {
+        localStorage.setItem('projectsPageNumber', currentPage)
+    }, [currentPage])
+
+    useEffect( () => {
+        localStorage.setItem('previousLocation', "Projects")
+    }, [])
+
 
     function handleResetClick() {
         setSearch("");
         setSelect("all");
     }
-    
-
+   
     
 
     return (

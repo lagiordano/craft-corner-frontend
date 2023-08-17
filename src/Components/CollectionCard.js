@@ -1,17 +1,16 @@
 import React, {useState, useEffect} from "react";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import projectPlaceholder from "../images/projectPlaceholder.jpg";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import DeleteConfirmation from "./DeleteConfirmation";
 
 
-function CollectionCard({completedStatus, project, setCollectionFilter, setReRender, reRender, setCurrentPage, currentPage}) {
+function CollectionCard({completedStatus, project, setCollectionFilter, setReRender, reRender, setCurrentPage}) {
 
    
-   const location = useLocation();
     const [completedValue, setCompletedValue] = useState(completedStatus)
     const [userProjectId, setUserProjectId] = useState(null);
     const [hasError, setHasError] = useState(false)
@@ -37,7 +36,7 @@ function CollectionCard({completedStatus, project, setCollectionFilter, setReRen
             };
         })
         .catch(() => setHasError(true))
-    }, [])
+    }, [project.id])
 
     
 
@@ -123,7 +122,7 @@ function CollectionCard({completedStatus, project, setCollectionFilter, setReRen
                 </Card.Body>
                 :
                 <>
-                <Link to={`/projects/${project.id}`} state={{from: "Collection", currentPage: currentPage, pathname: location.pathname}} className="text-decoration-none">
+                <Link to={`/projects/${project.id}`}  className="text-decoration-none">
                     <Card.Img variant="top" src={project.image || projectPlaceholder} alt={project.title} />
                     <Card.Body>
                         <Card.Text className="text-secondary text-capitalize text-strong">{project.title}</Card.Text>

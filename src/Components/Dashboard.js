@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import CollectionCard from "./CollectionCard";
-import { Link, useLocation } from "react-router-dom";
+import { Link} from "react-router-dom";
 import PaginationComponent from "./PaginationComponent";
 import CollectionHeader from "./CollectionHeader";
 
@@ -18,7 +18,6 @@ function Dashboard({currentUser}) {
         localStorage.clear();
     }, [])
 
-    const location = useLocation(); 
 
     const storedSearch = localStorage.getItem('collectionSearch');
     const storedSelect = localStorage.getItem('collectionSelect');
@@ -61,7 +60,8 @@ function Dashboard({currentUser}) {
 
 
      // pagination 
-     const [currentPage, setCurrentPage] = useState(location.state ? location.state.currentPage : 1);
+    const collectionPageNumber = localStorage.getItem("collectionPageNumber")
+    const [currentPage, setCurrentPage] = useState(parseInt(collectionPageNumber) || 1);
      const projectsPerPage = 12;
      const indexOfLastProject = currentPage * projectsPerPage;
      const indexOfFirstProject = indexOfLastProject - projectsPerPage;
@@ -82,6 +82,13 @@ function Dashboard({currentUser}) {
         localStorage.setItem('collectionSearch', search)
     }, [search])
 
+    useEffect( () => {
+        localStorage.setItem('collectionPageNumber', currentPage)
+    }, [currentPage])
+
+    useEffect( () => {
+        localStorage.setItem('previousLocation', "Collection")
+    }, [])
 
 
     // reset search filters, display all 
@@ -124,7 +131,7 @@ function Dashboard({currentUser}) {
                 :
                 <>
                 <Row xs={1} sm={2} md={3} xl={4} className="g-4 mx-2 justify-content-center d-flex">
-                    {currentProjects.map( item => <CollectionCard project={item.project} completedStatus={item.completed_status} key={item.id} setCollectionFilter={setCollectionFilter} setReRender={setReRender} reRender={reRender} setCurrentPage={setCurrentPage} currentPage={currentPage} />)}
+                    {currentProjects.map( item => <CollectionCard project={item.project} completedStatus={item.completed_status} key={item.id} setCollectionFilter={setCollectionFilter} setReRender={setReRender} reRender={reRender} setCurrentPage={setCurrentPage}/>)}
                 </Row>
                 <Row className="pt-4">
                     <Col className="d-flex justify-content-center">

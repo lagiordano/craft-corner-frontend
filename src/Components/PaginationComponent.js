@@ -5,6 +5,8 @@ import { dropEllipsis } from "react-responsive-pagination/narrowBehaviour";
 
 function PaginationComponent({nPages, currentPage, setCurrentPage}) {
 
+    console.log(currentPage);
+    
    return (
     <ResponsivePagination
         current={currentPage}

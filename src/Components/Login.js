@@ -50,7 +50,7 @@ function Login({setCurrentUser}) {
                 setErrors(null);
                 r.json().then(json => setCurrentUser(json))
                 .then(() => {
-                    if (state) {
+                    if (state && state.location) {
                         navigate(state.location)
                     } else {
                         navigate("/dashboard")

@@ -5,9 +5,9 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
 import ErrorMessages from "./ErrorMessages";
 import Comment from "./Comment";
+import UnauthorizedModal from "./UnauthorizedModal";
 
 
 function Comments ({comments, projectID, currentUser}) {
@@ -17,9 +17,22 @@ function Comments ({comments, projectID, currentUser}) {
     const [commentsList, setCommentsList] = useState(comments);
     const [errors, setErrors] = useState(null);
 
-    console.log(comments)
+    const [show, setShow] = useState(false)
+    const handleClose = () => setShow(false)
+
     
-    function handleAddComment() {
+     // check whether user is logged in
+     function handleAddComment (e) {
+        e.preventDefault();
+        if (currentUser) {
+            setShow(false);
+            addComment();
+        } else {
+            setShow(true);
+        };
+    };
+    
+    function addComment() {
         fetch("/comments", {
             method: "POST", 
             headers: {
@@ -33,8 +46,9 @@ function Comments ({comments, projectID, currentUser}) {
         .then(r => {
             if (r.ok) {
                 r.json().then(json => setCommentsList([...commentsList, json]))
+                setNewComment("")
             } else {
-                r.json().then(json => json.errors ? setErrors(json.errors) : setErrors(["Unable to add new project at this time"]))
+                r.json().then(json => json.errors ? setErrors(json.errors) : setErrors(["Unable to add comment at this time"]))
             }
         })
     }
@@ -58,6 +72,7 @@ function Comments ({comments, projectID, currentUser}) {
                         <InputGroup >
                             <Form.Control placeholder="Add a comment..." value={newComment} onChange={e => setNewComment(e.target.value)}/>
                             <Button className="text-white" type="submit">Add</Button>
+                            <UnauthorizedModal showModal={show} handleClose={handleClose} />
                         </InputGroup>
                     </Form>
                 </Col>
