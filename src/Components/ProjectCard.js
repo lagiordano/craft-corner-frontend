@@ -6,7 +6,7 @@ import projectPlaceholder from "../images/projectPlaceholder.jpg";
 
 
 
-function ProjectCard({image, title, id, currentPage}) {
+function ProjectCard({image, title, id}) {
 
 
     

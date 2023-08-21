@@ -19,17 +19,18 @@ function Home() {
         document.title = "Craft Corner";
         document.body.style = 'background: rgb(250,223,223);';
         localStorage.clear();
+        
     }, [])
 
 
     // Shows popup advising user signup or login to use feature when redirected by protected user route
-    useEffect(() => {
-        if (state) {
-            setShow(true)
-        } else {
-            setShow(false)
-        }
-    }, [])
+    // useEffect(() => {
+    //     if (state) {
+    //         setShow(true)
+    //     } else {
+    //         setShow(false)
+    //     }
+    // }, [])
 
 
     // Receives 4 projects with the most "adds" to display on home page

@@ -38,13 +38,14 @@ function Projects({currentUser}) {
                 r.json().then(json => {
                     setErrors(null);
                     setProjects(json)
+                    console.log(json)
                 })
             } else {
                 setErrors(["Unable to load projects at this time"]);
             };
         })
         .catch(() => setErrors(["Unable to load projects at this time"]))
-    }, [projects]);
+    }, []);
 
     const filteredProjects = projects.filter( project => {
         if (select === "all") return true;

@@ -26,6 +26,10 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+
+  
+        
+
   // auto log in 
   useEffect( () => {
     fetch("/me")
@@ -52,7 +56,7 @@ function App() {
     <ErrorBoundary FallbackComponent={FallbackComponent}>
       <Router>
         <div id="wrapper">
-        <NavBar currentUser={currentUser} setCurrentUser={setCurrentUser}/>
+        <NavBar currentUser={currentUser} setCurrentUser={setCurrentUser} />
         <Routes>
             <Route exact path="/projects" element={<Projects currentUser={currentUser} />} />
             <Route exact path="/projects/:id" element={<Project currentUser={currentUser} />} />
@@ -61,7 +65,7 @@ function App() {
           null 
           :
           <>
-          <Route element={<ProtectedVisitorRoute currentUser={currentUser} />}>
+          <Route element={<ProtectedVisitorRoute currentUser={currentUser}/>}>
             <Route exact path="/" element={<Home setCurrentUser={setCurrentUser} />} />
             <Route exact path="/signup" element={<Signup setCurrentUser={setCurrentUser}/>} />
             <Route exact path="/login" element={<Login setCurrentUser={setCurrentUser} />} />

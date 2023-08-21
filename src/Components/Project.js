@@ -11,12 +11,7 @@ import Comments from "./Comments";
 
 function Project({currentUser}) {
 
-    useEffect( () => {
-        window.onpopstate = function(e) {
-            console.log(e)
-        }
-    }, )
-        
+    
     
     
 
@@ -116,6 +111,7 @@ function Project({currentUser}) {
     };
 
     
+    // Checks local storage for previous location and navigates back 
     function handleBackClick() {
         
         if (previousPage && previousPage === "Projects") {
